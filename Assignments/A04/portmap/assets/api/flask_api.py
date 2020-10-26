@@ -53,24 +53,30 @@ def load_data(path):
                 return None
 
 
-UFOS = load_data('Assignments/A04/Data/ufo_data/fixed_ufos.geojson')
-# EZUFOS =load_data('Assignments/A04/Data/ufo_data/ufos.geojson')
-CITIES = load_data(
-    'Assignments/A04/Data/countries_states/major_cities.geojson')
-# # print(type(CITIES))
-# CELL = load_data('Assignments/A04/Data/cellular_data/cellular.geojson')
-STATE_BBOXES = load_data('Assignments/A04/Data/US_State_Bounding_Boxes.csv')
-STATES = load_data('Assignments/A04/Data/countries_states/states.json')
-# RRS = load_data('Assignments/A04/Data/railroads.geojson')
+UFOS = load_data('Assignments/A04/Data/fixed_ufos.geojson')
+EZUFOS =load_data('Assignments/A04/Data/ufos.geojson')
+CITIES = load_data('Assignments/A04/Data/major_cities.geojson')
 
-# setNames = ['UFOS', 'CRASHES', 'CITIES', 'CELL', 'STATE_BBOXES', 'STATES', 'RRS']
-# dataSets = [UFOS, CRASHES, CITIES, CELL, STATE_BBOXES, STATES, RRS]
+CELL = load_data('Assignments/A04/Data/cellular.geojson')
+STATE_BBOXES = load_data('Assignments/A04/Data/US_State_Bounding_Boxes.csv')
+STATES = load_data('Assignments/A04/Data/states.json')
+RRS =load_data("Assignments/A04/Data/easyRRS.geojson")#us_railroads_with_states.geojson")
+
+
+EARTHQUAKES = glob.glob("Assignments/A04/Data/earthquake_data/*.json")
+
 cityDict = {}
 for city in CITIES['features']:
     if city['properties']['name'] != "line":
         cityDict[city['properties']['name']] = city['geometry']['coordinates']
 CITIES = cityDict
 # print(CITIES)
+
+setNames = ['UFOS','EZUFOS', 'CITIES', 'CELL', 'STATE_BBOXES', 'STATES', 'RRS', 'EARTHQUAKES']
+dataSets = [UFOS,EZUFOS, CITIES, CELL, STATE_BBOXES, STATES, RRS, EARTHQUAKES]
+
+
+
 
 
 
@@ -108,6 +114,11 @@ def getRTree():
             index += 1
 
     return(idx, rtreeID)
+
+def getRailroadRTree():
+    pass
+
+
 
 
 #                                 $$\
@@ -171,7 +182,7 @@ def states():
 def state_bbox():
     """ Description: Return a bounding box for a US state
         Params:
-            None
+            state (string): name of a state
     Example: http://localhost:8080/state_bbox?state=<statename>
     """
     state = request.args.get('state', None)
@@ -342,6 +353,15 @@ def distance():
     distance = {}
     distance['miles'] = haversine(point1,point2,miles=True)
     return distance
+
+@app.route('/railroad')
+def railroad():
+    """ Description: return the railroads in a specific state
+        Params:
+            None
+    Example: http://localhost:8080/railroad?state=<statename>
+    """
+
     
 
 #                     $$\                      $$\
@@ -356,12 +376,43 @@ def distance():
 # $$ |
 # \__|
 
+# def handle_response(data,params=None,error=None):
+#     """ handle_response
+#     """
+#     success = True
+
+#     # print(data)
+#     if data:
+#         if params=='dict':
+#             pass
+#             count = len(data)
+
+#         elif not isinstance(data,list):
+#             data = [data]
+#         count = len(data)
+#     else:
+#         count = 0
+#         error = "Data variable is empty!"
+
+
+#     result = {"success":success,"count":count,"results":data,"params":params}
+
+#     if error:
+#         success = False
+
+#         result['error'] = error
+
+#     print(f"DATA TYPE of result is {type(result)}")
+#     print(f"DATA TYPE of jsonify result {type(jsonify(result))}")
+#     return jsonify(result)
+
+
 def handle_response(data,params=None,error=None):
     """ handle_response
     """
     success = True
 
-    print(data)
+    # print(data)
     if data:
         if params=='dict':
             pass
@@ -375,8 +426,8 @@ def handle_response(data,params=None,error=None):
         error = "Data variable is empty!"
 
 
-    result = {"success":success,"count":count,"results":data,"params":params}
-
+    # result = {"success":success,"count":count,"results":data,"params":params}
+    result = data
     if error:
         success = False
 
@@ -461,11 +512,10 @@ def toGeoJson(data, dtype):
 
 if __name__ == '__main__':
 
-    # {'geometry': {'coordinates': [-111.2224422, 32.436381], 'type': 'Point'}, 'properties': {'marker-color': '#c39953', 'name': 'Marana'}, 'type': 'Feature'}
-
-    tree, coords = getTree()
-    idx, rtreeID = getRTree()
+    # tree, coords = getTree()
+    # idx, rtreeID = getRTree()
     app.run(host='localhost', port=8080,debug=True)
+    getRailroadRTree()
 
 
 

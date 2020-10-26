@@ -1,1 +1,2 @@
-    print(data)
+    for feature in RRS:
+        print(feature)

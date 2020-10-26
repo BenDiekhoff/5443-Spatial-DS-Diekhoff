@@ -121,65 +121,65 @@ map.on('load', function () {
 $("#info").hide()
 map.on('load', function () {
 
-$(document).ready(function () {
+    $(document).ready(function () {
 
 
-    //clear
-    $('#findLLButtonClear').click(function () {
+        //clear
+        $('#findLLButtonClear').click(function () {
 
-        map.removeLayer("enterLL");
-        map.removeSource("enterLL");
-
-        if (map.getLayer("enterLL")) {
             map.removeLayer("enterLL");
             map.removeSource("enterLL");
-        }
+
+            if (map.getLayer("enterLL")) {
+                map.removeLayer("enterLL");
+                map.removeSource("enterLL");
+            }
+
+        });
+
+        //create
+        $('#findLLButton').click(function () {
+
+            var enterLng = +document.getElementById('lngInput').value
+            var enterLat = +document.getElementById('latInput').value
+
+            var enterLL = turf.point([enterLng, enterLat]);
+            console.log(enterLL)
+
+            map.addSource('enterLL', {
+                type: 'geojson',
+                data: enterLL
+            });
+
+            map.addLayer({
+                id: 'enterLL',
+                type: 'circle',
+                source: 'enterLL',
+                layout: {
+
+                },
+                paint: {
+                    "circle-color": 'red',
+                    "circle-radius": 8,
+                },
+            });
+
+            map.flyTo({
+                center: [enterLng, enterLat]
+            });
+
+        });
 
     });
-
-    //create
-    $('#findLLButton').click(function () {
-
-        var enterLng = +document.getElementById('lngInput').value
-        var enterLat = +document.getElementById('latInput').value
-
-        var enterLL = turf.point([enterLng, enterLat]);
-        console.log(enterLL)
-
-        map.addSource('enterLL', {
-            type: 'geojson',
-            data: enterLL
-        });
-
-        map.addLayer({
-            id: 'enterLL',
-            type: 'circle',
-            source: 'enterLL',
-            layout: {
-
-            },
-            paint: {
-                "circle-color": 'red',
-                "circle-radius": 8,
-            },
-        });
-
-        map.flyTo({
-            center: [enterLng, enterLat]
-        });
-
-    });
-
-});
 });
 
 // Coordinates Tool
 // Coordinates Tool
 // Coordinates Tool
 map.on(touchEvent, function (e) {
-$("#info").show()
-document.getElementById('info').innerHTML =
-    JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
+    $("#info").show()
+    document.getElementById('info').innerHTML =
+        JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
 });
 //$$\                                                    $$$$$$$$\                            
 //$$ |                                                   \__$$  __|                           
@@ -234,7 +234,7 @@ map.on('load', function () {
         "type": "fill",
         "source": "monster",
         "layout": {
-      //"visibility": 'none'
+            //"visibility": 'none'
         },
         "paint": {
             'fill-color': '#b30000',
@@ -412,11 +412,29 @@ map.on('load', function () {
             'line-color': '#0099cc',
             'line-opacity': .8,
             "line-width": 4,
+        }
+    });
+
+    // Ben
+    map.addSource('EZUFOS', { type: 'geojson', data: emptyGJ });
+    map.addLayer({
+        "id": "EZUFOS",
+        "type": "point",
+        "source": "EZUFOS",
+        "layout": {
+            "visibility": 'none'
         },
+        "paint": {
+            'circle-color': 'white',
+            'circle-opacity': 1.0,
+            'circle-stroke-color': '#ff8c1a',
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': 1.0,
+        }
     });
 
 
-    
+
 
     // //Layer Info function
     // //Layer Info function
@@ -540,7 +558,7 @@ map.on('load', function () {
     //                                                                              \__|                                                                                                                                                                                                \______/                                                               
     map.on('mousemove', function (e) {
         var features = map.queryRenderedFeatures(e.point, {
-            layers: ['ocean', 'river', 'country', 'populated', 'monster', 'octo']
+            layers: ['ocean', 'river', 'country', 'populated', 'monster', 'octo', 'EZUFOS']
         });
         map.getCanvas().style.cursor = (features.length) ? 'default' : '';
     });
@@ -705,185 +723,199 @@ map.on('load', function () {
 // Directory Options
 // Directory Options - open or closed by defualt (true/false)
 var directoryOptions =
-[
-    {   'name': 'Ben',
-        'open': true
-    },   
-    {
-        'name': 'Monsters',
-        'open': true
-    },
-    {
-        'name': 'Cultural',
-        'open': true
-    },
-    {
-        'name': 'Physical',
-        'open': true
-    },
+    [
 
-];
+        {
+            'name': 'Monsters',
+            'open': true
+        },
+        {
+            'name': 'Cultural',
+            'open': true
+        },
+        {
+            'name': 'Physical',
+            'open': true
+        },
+        {
+            'name': 'Ben',
+            'open': true
+        },
+
+    ];
 
 // organize layers in the layer tree
 var layers =
 
-[
-    // Mr Claw LAYER TREE CONFIG
-    // Mr Claw LAYER TREE CONFIG
-    {
-        'name': 'Mr Claw',
-        'id': 'monster_group',
-        'hideLabel': ['mouth', 'water-line', 'eyes', 'monster'],
-        'icon': 'assets/images/layer-stack-15.svg',
-        'layerGroup': [
-            {
-                'id': 'monster',
-                'source': 'monster',
-                'name': 'Mr. Claw',
-                'path': 'assets/json/monster.json',
-            },
-            {
-                'id': 'mouth',
-                'source': 'mouth',
-                'name': 'Mouth',
-                'path': 'assets/json/mouth.json',
-            },
-            {
-                'id': 'water-line',
-                'source': 'water-line',
-                'name': 'Water',
-                'path': 'assets/json/water.json',
-            },
-            {
-                'id': 'eyes',
-                'source': 'eyes',
-                'name': 'Eyes',
-                'path': 'assets/json/eyes.json',
-            },
+    [
+        // Mr Claw LAYER TREE CONFIG
+        // Mr Claw LAYER TREE CONFIG
+        {
+            'name': 'Mr Claw',
+            'id': 'monster_group',
+            'hideLabel': ['mouth', 'water-line', 'eyes', 'monster'],
+            'icon': 'assets/images/layer-stack-15.svg',
+            'layerGroup': [
+                {
+                    'id': 'monster',
+                    'source': 'monster',
+                    'name': 'Mr. Claw',
+                    'path': 'assets/json/monster.json',
+                },
+                {
+                    'id': 'mouth',
+                    'source': 'mouth',
+                    'name': 'Mouth',
+                    'path': 'assets/json/mouth.json',
+                },
+                {
+                    'id': 'water-line',
+                    'source': 'water-line',
+                    'name': 'Water',
+                    'path': 'assets/json/water.json',
+                },
+                {
+                    'id': 'eyes',
+                    'source': 'eyes',
+                    'name': 'Eyes',
+                    'path': 'assets/json/eyes.json',
+                },
 
-        ],
-        'directory': 'Monsters'
-    },
+            ],
+            'directory': 'Monsters'
+        },
 
-    // Mr Octo LAYER TREE CONFIG
-    // Mr Octo LAYER TREE CONFIG
-    {
-        'name': 'Mr. Octo',
-        'id': 'monster_group_2',
-        'hideLabel': ['octo', 'water-line-2', 'eyes2', 'mouth2'],
-        'icon': 'assets/images/layer-stack-15.svg',
-        'layerGroup': [
-            {
-                'id': 'octo',
-                'source': 'octo',
-                'name': 'Mr. Octo',
-                'path': 'assets/json/octo.json',
-            },
-            {
-                'id': 'water-line-2',
-                'source': 'water-line-2',
-                'name': 'Water',
-                'path': 'assets/json/water2.json',
-            },
-            {
-                'id': 'mouth2',
-                'source': 'mouth2',
-                'name': 'Mouth',
-                'path': 'assets/json/mouth2.json',
-            },
-            {
-                'id': 'eyes2',
-                'source': 'eyes2',
-                'name': 'Eyes',
-                'path': 'assets/json/eyes2.json',
-            },
-        ],
-        'directory': 'Monsters'
-    },
+        // Mr Octo LAYER TREE CONFIG
+        // Mr Octo LAYER TREE CONFIG
+        {
+            'name': 'Mr. Octo',
+            'id': 'monster_group_2',
+            'hideLabel': ['octo', 'water-line-2', 'eyes2', 'mouth2'],
+            'icon': 'assets/images/layer-stack-15.svg',
+            'layerGroup': [
+                {
+                    'id': 'octo',
+                    'source': 'octo',
+                    'name': 'Mr. Octo',
+                    'path': 'assets/json/octo.json',
+                },
+                {
+                    'id': 'water-line-2',
+                    'source': 'water-line-2',
+                    'name': 'Water',
+                    'path': 'assets/json/water2.json',
+                },
+                {
+                    'id': 'mouth2',
+                    'source': 'mouth2',
+                    'name': 'Mouth',
+                    'path': 'assets/json/mouth2.json',
+                },
+                {
+                    'id': 'eyes2',
+                    'source': 'eyes2',
+                    'name': 'Eyes',
+                    'path': 'assets/json/eyes2.json',
+                },
+            ],
+            'directory': 'Monsters'
+        },
 
-     //  $$$$$$\            $$\   $$\                                  $$\       $$\        $$$$$$\ $$\     $$\ $$$$$$$$\ $$$$$$$\        $$$$$$$$\ $$$$$$$\  $$$$$$$$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\   $$\ $$$$$$$$\ $$$$$$\  $$$$$$\  
-     // $$  __$$\           $$ |  $$ |                                 $$ |      $$ |      $$  __$$\\$$\   $$  |$$  _____|$$  __$$\       \__$$  __|$$  __$$\ $$  _____|$$  _____|      $$  __$$\ $$  __$$\ $$$\  $$ |$$  _____|\_$$  _|$$  __$$\ 
-     // $$ /  \__|$$\   $$\ $$ |$$$$$$\   $$\   $$\  $$$$$$\  $$$$$$\  $$ |      $$ |      $$ /  $$ |\$$\ $$  / $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ /  \__|$$ /  $$ |$$$$\ $$ |$$ |        $$ |  $$ /  \__|
-     // $$ |      $$ |  $$ |$$ |\_$$  _|  $$ |  $$ |$$  __$$\ \____$$\ $$ |      $$ |      $$$$$$$$ | \$$$$  /  $$$$$\    $$$$$$$  |         $$ |   $$$$$$$  |$$$$$\    $$$$$\          $$ |      $$ |  $$ |$$ $$\$$ |$$$$$\      $$ |  $$ |$$$$\ 
-     // $$ |      $$ |  $$ |$$ |  $$ |    $$ |  $$ |$$ |  \__|$$$$$$$ |$$ |      $$ |      $$  __$$ |  \$$  /   $$  __|   $$  __$$<          $$ |   $$  __$$< $$  __|   $$  __|         $$ |      $$ |  $$ |$$ \$$$$ |$$  __|     $$ |  $$ |\_$$ |
-     // $$ |  $$\ $$ |  $$ |$$ |  $$ |$$\ $$ |  $$ |$$ |     $$  __$$ |$$ |      $$ |      $$ |  $$ |   $$ |    $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ |  $$\ $$ |  $$ |$$ |\$$$ |$$ |        $$ |  $$ |  $$ |
-     // \$$$$$$  |\$$$$$$  |$$ |  \$$$$  |\$$$$$$  |$$ |     \$$$$$$$ |$$ |      $$$$$$$$\ $$ |  $$ |   $$ |    $$$$$$$$\ $$ |  $$ |         $$ |   $$ |  $$ |$$$$$$$$\ $$$$$$$$\       \$$$$$$  | $$$$$$  |$$ | \$$ |$$ |      $$$$$$\ \$$$$$$  |
-     //  \______/  \______/ \__|   \____/  \______/ \__|      \_______|\__|      \________|\__|  \__|   \__|    \________|\__|  \__|         \__|   \__|  \__|\________|\________|       \______/  \______/ \__|  \__|\__|      \______| \______/ 
-     //                                                                                                                                                                                                                                           
-     //                                                                                                                                                                                                                                           
-     //                                                                                                                                                                                                                                           
-     // Cultural LAYER TREE CONFIG
+        //  $$$$$$\            $$\   $$\                                  $$\       $$\        $$$$$$\ $$\     $$\ $$$$$$$$\ $$$$$$$\        $$$$$$$$\ $$$$$$$\  $$$$$$$$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\   $$\ $$$$$$$$\ $$$$$$\  $$$$$$\  
+        // $$  __$$\           $$ |  $$ |                                 $$ |      $$ |      $$  __$$\\$$\   $$  |$$  _____|$$  __$$\       \__$$  __|$$  __$$\ $$  _____|$$  _____|      $$  __$$\ $$  __$$\ $$$\  $$ |$$  _____|\_$$  _|$$  __$$\ 
+        // $$ /  \__|$$\   $$\ $$ |$$$$$$\   $$\   $$\  $$$$$$\  $$$$$$\  $$ |      $$ |      $$ /  $$ |\$$\ $$  / $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ /  \__|$$ /  $$ |$$$$\ $$ |$$ |        $$ |  $$ /  \__|
+        // $$ |      $$ |  $$ |$$ |\_$$  _|  $$ |  $$ |$$  __$$\ \____$$\ $$ |      $$ |      $$$$$$$$ | \$$$$  /  $$$$$\    $$$$$$$  |         $$ |   $$$$$$$  |$$$$$\    $$$$$\          $$ |      $$ |  $$ |$$ $$\$$ |$$$$$\      $$ |  $$ |$$$$\ 
+        // $$ |      $$ |  $$ |$$ |  $$ |    $$ |  $$ |$$ |  \__|$$$$$$$ |$$ |      $$ |      $$  __$$ |  \$$  /   $$  __|   $$  __$$<          $$ |   $$  __$$< $$  __|   $$  __|         $$ |      $$ |  $$ |$$ \$$$$ |$$  __|     $$ |  $$ |\_$$ |
+        // $$ |  $$\ $$ |  $$ |$$ |  $$ |$$\ $$ |  $$ |$$ |     $$  __$$ |$$ |      $$ |      $$ |  $$ |   $$ |    $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ |  $$\ $$ |  $$ |$$ |\$$$ |$$ |        $$ |  $$ |  $$ |
+        // \$$$$$$  |\$$$$$$  |$$ |  \$$$$  |\$$$$$$  |$$ |     \$$$$$$$ |$$ |      $$$$$$$$\ $$ |  $$ |   $$ |    $$$$$$$$\ $$ |  $$ |         $$ |   $$ |  $$ |$$$$$$$$\ $$$$$$$$\       \$$$$$$  | $$$$$$  |$$ | \$$ |$$ |      $$$$$$\ \$$$$$$  |
+        //  \______/  \______/ \__|   \____/  \______/ \__|      \_______|\__|      \________|\__|  \__|   \__|    \________|\__|  \__|         \__|   \__|  \__|\________|\________|       \______/  \______/ \__|  \__|\__|      \______| \______/ 
+        //                                                                                                                                                                                                                                           
+        //                                                                                                                                                                                                                                           
+        //                                                                                                                                                                                                                                           
+        // Cultural LAYER TREE CONFIG
 
-    //  map.addSource('populated', { type: 'geojson', data: emptyGJ });
-    //  map.addLayer({
-    //      "id": "populated",
-    //      "type": "circle",
-    //      "source": "populated",
-    //      "layout": {
-    //          "visibility": 'none'
-    //      },
-    //      "paint": {
-    //          'circle-color': 'white',
-    //          'circle-opacity': 1.0,
-    //          'circle-stroke-color': '#ff8c1a',
-    //          'circle-stroke-width': 2,
-    //          'circle-stroke-opacity': 1.0,
-    //      }
-    //  });
- 
-
-    {
-        'name': 'Populated Places',
-        'id': 'populated',
-        'source': "populated",
-        'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places_simple.geojson',
-        'directory': 'Cultural',
-    },
-    // {
-    //     'name': 'UFO',
-    //     'id': 'ufo',
-    //     'source': "ufo",
-    //     'path': 'Assignments/A04/Data/ufo_data/ufos.geojson',
-    //     'directory': 'Ben',
-    // },
-    {
-        'name': 'Countries',
-        'id': 'country',
-        'source': 'country',
-        'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_map_units.geojson',
-        'directory': 'Cultural',
-    },
+        //  map.addSource('populated', { type: 'geojson', data: emptyGJ });
+        //  map.addLayer({
+        //      "id": "populated",
+        //      "type": "circle",
+        //      "source": "populated",
+        //      "layout": {
+        //          "visibility": 'none'
+        //      },
+        //      "paint": {
+        //          'circle-color': 'white',
+        //          'circle-opacity': 1.0,
+        //          'circle-stroke-color': '#ff8c1a',
+        //          'circle-stroke-width': 2,
+        //          'circle-stroke-opacity': 1.0,
+        //      }
+        //  });
 
 
-    // $$$$$$$\  $$\                           $$\                    $$\       $$\        $$$$$$\ $$\     $$\ $$$$$$$$\ $$$$$$$\        $$$$$$$$\ $$$$$$$\  $$$$$$$$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\   $$\ $$$$$$$$\ $$$$$$\  $$$$$$\  
-    // $$  __$$\ $$ |                          \__|                   $$ |      $$ |      $$  __$$\\$$\   $$  |$$  _____|$$  __$$\       \__$$  __|$$  __$$\ $$  _____|$$  _____|      $$  __$$\ $$  __$$\ $$$\  $$ |$$  _____|\_$$  _|$$  __$$\ 
-    // $$ |  $$ |$$$$$$$\  $$\   $$\  $$$$$$$\ $$\  $$$$$$$\ $$$$$$\  $$ |      $$ |      $$ /  $$ |\$$\ $$  / $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ /  \__|$$ /  $$ |$$$$\ $$ |$$ |        $$ |  $$ /  \__|
-    // $$$$$$$  |$$  __$$\ $$ |  $$ |$$  _____|$$ |$$  _____|\____$$\ $$ |      $$ |      $$$$$$$$ | \$$$$  /  $$$$$\    $$$$$$$  |         $$ |   $$$$$$$  |$$$$$\    $$$$$\          $$ |      $$ |  $$ |$$ $$\$$ |$$$$$\      $$ |  $$ |$$$$\ 
-    // $$  ____/ $$ |  $$ |$$ |  $$ |\$$$$$$\  $$ |$$ /      $$$$$$$ |$$ |      $$ |      $$  __$$ |  \$$  /   $$  __|   $$  __$$<          $$ |   $$  __$$< $$  __|   $$  __|         $$ |      $$ |  $$ |$$ \$$$$ |$$  __|     $$ |  $$ |\_$$ |
-    // $$ |      $$ |  $$ |$$ |  $$ | \____$$\ $$ |$$ |     $$  __$$ |$$ |      $$ |      $$ |  $$ |   $$ |    $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ |  $$\ $$ |  $$ |$$ |\$$$ |$$ |        $$ |  $$ |  $$ |
-    // $$ |      $$ |  $$ |\$$$$$$$ |$$$$$$$  |$$ |\$$$$$$$\\$$$$$$$ |$$ |      $$$$$$$$\ $$ |  $$ |   $$ |    $$$$$$$$\ $$ |  $$ |         $$ |   $$ |  $$ |$$$$$$$$\ $$$$$$$$\       \$$$$$$  | $$$$$$  |$$ | \$$ |$$ |      $$$$$$\ \$$$$$$  |
-    // \__|      \__|  \__| \____$$ |\_______/ \__| \_______|\_______|\__|      \________|\__|  \__|   \__|    \________|\__|  \__|         \__|   \__|  \__|\________|\________|       \______/  \______/ \__|  \__|\__|      \______| \______/ 
-    //                     $$\   $$ |                                                                                                                                                                                                            
-    //                     \$$$$$$  |                                                                                                                                                                                                            
-    //                      \______/                                                                                                                                                                                                             
-    // Physical LAYER TREE CONFIG
+        {
+            'name': 'Populated Places',
+            'id': 'populated',
+            'source': "populated",
+            'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places_simple.geojson',
+            'directory': 'Cultural',
+        },
+        // {
+        //     'name': 'UFO',
+        //     'id': 'ufo',
+        //     'source': "ufo",
+        //     'path': 'Assignments/A04/Data/ufo_data/ufos.geojson',
+        //     'directory': 'Ben',
+        // },
+        {
+            'name': 'Countries',
+            'id': 'country',
+            'source': 'country',
+            'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_map_units.geojson',
+            'directory': 'Cultural',
+        },
 
-    {
-        'name': 'Major Rivers',
-        'id': 'river',
-        'source': 'river',
-        'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_rivers_lake_centerlines.geojson',
-        'directory': 'Ben',
-    },
-    {
-        'name': 'Oceans',
-        'id': 'ocean',
-        'source': 'ocean',
-        'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_geography_marine_polys.geojson',
-        'directory': 'Physical',
-    },
 
-];
+        // $$$$$$$\  $$\                           $$\                    $$\       $$\        $$$$$$\ $$\     $$\ $$$$$$$$\ $$$$$$$\        $$$$$$$$\ $$$$$$$\  $$$$$$$$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\   $$\ $$$$$$$$\ $$$$$$\  $$$$$$\  
+        // $$  __$$\ $$ |                          \__|                   $$ |      $$ |      $$  __$$\\$$\   $$  |$$  _____|$$  __$$\       \__$$  __|$$  __$$\ $$  _____|$$  _____|      $$  __$$\ $$  __$$\ $$$\  $$ |$$  _____|\_$$  _|$$  __$$\ 
+        // $$ |  $$ |$$$$$$$\  $$\   $$\  $$$$$$$\ $$\  $$$$$$$\ $$$$$$\  $$ |      $$ |      $$ /  $$ |\$$\ $$  / $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ /  \__|$$ /  $$ |$$$$\ $$ |$$ |        $$ |  $$ /  \__|
+        // $$$$$$$  |$$  __$$\ $$ |  $$ |$$  _____|$$ |$$  _____|\____$$\ $$ |      $$ |      $$$$$$$$ | \$$$$  /  $$$$$\    $$$$$$$  |         $$ |   $$$$$$$  |$$$$$\    $$$$$\          $$ |      $$ |  $$ |$$ $$\$$ |$$$$$\      $$ |  $$ |$$$$\ 
+        // $$  ____/ $$ |  $$ |$$ |  $$ |\$$$$$$\  $$ |$$ /      $$$$$$$ |$$ |      $$ |      $$  __$$ |  \$$  /   $$  __|   $$  __$$<          $$ |   $$  __$$< $$  __|   $$  __|         $$ |      $$ |  $$ |$$ \$$$$ |$$  __|     $$ |  $$ |\_$$ |
+        // $$ |      $$ |  $$ |$$ |  $$ | \____$$\ $$ |$$ |     $$  __$$ |$$ |      $$ |      $$ |  $$ |   $$ |    $$ |      $$ |  $$ |         $$ |   $$ |  $$ |$$ |      $$ |            $$ |  $$\ $$ |  $$ |$$ |\$$$ |$$ |        $$ |  $$ |  $$ |
+        // $$ |      $$ |  $$ |\$$$$$$$ |$$$$$$$  |$$ |\$$$$$$$\\$$$$$$$ |$$ |      $$$$$$$$\ $$ |  $$ |   $$ |    $$$$$$$$\ $$ |  $$ |         $$ |   $$ |  $$ |$$$$$$$$\ $$$$$$$$\       \$$$$$$  | $$$$$$  |$$ | \$$ |$$ |      $$$$$$\ \$$$$$$  |
+        // \__|      \__|  \__| \____$$ |\_______/ \__| \_______|\_______|\__|      \________|\__|  \__|   \__|    \________|\__|  \__|         \__|   \__|  \__|\________|\________|       \______/  \______/ \__|  \__|\__|      \______| \______/ 
+        //                     $$\   $$ |                                                                                                                                                                                                            
+        //                     \$$$$$$  |                                                                                                                                                                                                            
+        //                      \______/                                                                                                                                                                                                             
+        // Physical LAYER TREE CONFIG
+
+        {
+            'name': 'Major Rivers',
+            'id': 'river',
+            'source': 'river',
+            'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_rivers_lake_centerlines.geojson',
+            'directory': 'Physical',
+        },
+        {
+            'name': 'Oceans',
+            'id': 'ocean',
+            'source': 'ocean',
+            'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_geography_marine_polys.geojson',
+            'directory': 'Ben',
+        },
+        //Ben LAYER TREE CONFIG
+
+        {
+            'name': 'Ez UFOS ',
+            'id': 'EZUFOS',
+            'source': 'EZUFOS',
+            'path': 'http://localhost:8080/dataset?set=EZUFOS',
+            'directory': 'Ben',
+        },
+
+
+
+
+    ];
 
 
 var layerList = new LayerTree({ layers: layers, directoryOptions: directoryOptions, onClickLoad: true });

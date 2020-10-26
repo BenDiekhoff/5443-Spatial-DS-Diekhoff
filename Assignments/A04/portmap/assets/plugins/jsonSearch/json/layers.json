@@ -24,9 +24,9 @@
       "type": "line"
     },
     {
-      "source": "ufos.geojson",
-      "display_name": "UFOS",
-      "name": "UFO",
+      "source": "dataset?set=EZUFOS",
+      "display_name": "EZ UFOs ",
+      "name": "EZUFOS",
       "catagory": "Ben",
       "type": "point"
     },
