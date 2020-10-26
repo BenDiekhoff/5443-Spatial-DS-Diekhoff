@@ -1,0 +1,1 @@
+Make sure you create a file at /Assignments/A04 called mapboxToken.txt and paste your own token in it

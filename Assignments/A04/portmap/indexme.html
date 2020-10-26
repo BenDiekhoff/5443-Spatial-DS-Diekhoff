@@ -1,0 +1,719 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--
+    $$$$$$\                      $$\            $$\               
+    $$  __$$\                     \__|           $$ |              
+    $$ /  \__| $$$$$$$\  $$$$$$\  $$\  $$$$$$\ $$$$$$\    $$$$$$$\ 
+    \$$$$$$\  $$  _____|$$  __$$\ $$ |$$  __$$\\_$$  _|  $$  _____|
+    \____$$\ $$ /      $$ |  \__|$$ |$$ /  $$ | $$ |    \$$$$$$\  
+    $$\   $$ |$$ |      $$ |      $$ |$$ |  $$ | $$ |$$\  \____$$\ 
+    \$$$$$$  |\$$$$$$$\ $$ |      $$ |$$$$$$$  | \$$$$  |$$$$$$$  |
+    \______/  \_______|\__|      \__|$$  ____/   \____/ \_______/ 
+                                    $$ |                         
+                                    $$ |                         
+                                    \__|                         
+    Scripts
+    -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+    <!--[if IE]>
+    <script type="text/javascript">
+    window.location = "redirect.html";
+    </script>
+    <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="World" content="">
+    <title>World</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <!-- Bootstrap Core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="assets/css/bootstrap-custom.css" rel="stylesheet">
+    <!-- JQuery/JQueryUI  -->
+    <script src="assets/js/jquery.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+        integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    <!-- Mapbox GL -->
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Turf -->
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js"></script>
+    <!-- Layer Tree Plugin -->
+    <script src="assets/plugins/layerTree/js/layer-tree.js"></script>
+    <link href="assets/plugins/layerTree/dist/css/styles.min.css" rel="stylesheet">
+    <link href="assets/plugins/layerTree/dist/css/layer-tree-group-settings.css" rel="stylesheet">
+    <!-- Mapbox GL Draw API -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.4/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.4/mapbox-gl-draw.css"
+        type="text/css">
+    <!-- Mapbox GL Geocoder API -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css"
+        type="text/css">
+    <!-- Layer Search -->
+    <link href="assets/plugins/jsonSearch/chosen/chosen.css" rel="stylesheet">
+    <script src="assets/plugins/jsonSearch/layerSearch.js"></script>
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="assets/jquery-ui/jquery-ui.min.css" type="text/css">
+    <script src="assets/jquery-ui/jquery-ui.js"></script>
+    <!-- Misc. CSS -->
+    <link href="assets/css/styles-custom.css" rel="stylesheet">
+    <link href="assets/css/text-editor-style.css" rel="stylesheet">
+
+
+    <!--
+    $$$$$$\    $$\               $$\           
+    $$  __$$\   $$ |              $$ |          
+    $$ /  \__|$$$$$$\   $$\   $$\ $$ | $$$$$$\  
+    \$$$$$$\  \_$$  _|  $$ |  $$ |$$ |$$  __$$\ 
+    \____$$\   $$ |    $$ |  $$ |$$ |$$$$$$$$ |
+    $$\   $$ |  $$ |$$\ $$ |  $$ |$$ |$$   ____|
+    \$$$$$$  |  \$$$$  |\$$$$$$$ |$$ |\$$$$$$$\ 
+    \______/    \____/  \____$$ |\__| \_______|
+                        $$\   $$ |              
+                        \$$$$$$  |              
+                        \______/               
+    Style
+    -->
+
+    <style>
+        #map {
+            position: absolute;
+            top: 50px;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /*mapbox gl css override*/
+        .mapboxgl-ctrl-group {
+            border-radius: 0px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+            margin: 0 0 10px 65px;
+            float: left;
+        }
+
+        .mapboxgl-ctrl-group:not(:empty) {
+            -moz-box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapboxgl-ctrl-group>button+button {
+            border-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // initial load screen script
+        $(window).load(function () {
+            $(".se-pre-con").delay(2000).fadeOut(700);
+        });
+    </script>
+    <script>
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+    <!--initial load screen -->
+    <div class="se-pre-con">
+        <h2 style="text-align: center; margin-top:20%; color: white">
+            <i class="fa fa-cog fa-spin"></i>&nbsp;+&nbsp;
+            <i class="fa fa-globe"></i>&nbsp;=&nbsp;
+            <i class="fas fa-grin-hearts"></i>
+        </h2>
+    </div>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a style="display: inline-flex" class="navbar-brand">
+                    <i class="fa fa-globe"></i>&nbsp;World
+                </a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+
+
+
+                <!-- 
+                $$$$$$$\                      $$\                                         $$\                 
+                $$  __$$\                     $$ |                                        $$ |                
+                $$ |  $$ | $$$$$$\   $$$$$$\  $$ |  $$\ $$$$$$\$$$$\   $$$$$$\   $$$$$$\  $$ |  $$\  $$$$$$$\ 
+                $$$$$$$\ |$$  __$$\ $$  __$$\ $$ | $$  |$$  _$$  _$$\  \____$$\ $$  __$$\ $$ | $$  |$$  _____|
+                $$  __$$\ $$ /  $$ |$$ /  $$ |$$$$$$  / $$ / $$ / $$ | $$$$$$$ |$$ |  \__|$$$$$$  / \$$$$$$\  
+                $$ |  $$ |$$ |  $$ |$$ |  $$ |$$  _$$<  $$ | $$ | $$ |$$  __$$ |$$ |      $$  _$$<   \____$$\ 
+                $$$$$$$  |\$$$$$$  |\$$$$$$  |$$ | \$$\ $$ | $$ | $$ |\$$$$$$$ |$$ |      $$ | \$$\ $$$$$$$  |
+                \_______/  \______/  \______/ \__|  \__|\__| \__| \__| \_______|\__|      \__|  \__|\_______/ 
+                                                                                                            
+                                                                                                            
+                                                                                                            
+                Bookmarks
+                -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Bookmarks">
+                        <i class="fa fa-bookmark"></i>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a id="icelandBookmark">
+                                <i class="fa fa-fw fa-map-marker"></i> Iceland
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a id="safricaBookmark">
+                                <i class="fa fa-fw fa-map-marker"></i> S. Africa
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a id="japanBookmark">
+                                <i class="fa fa-fw fa-map-marker"></i> Japan
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a id="australiaBookmark">
+                                <i class="fa fa-fw fa-map-marker"></i> Australia
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Contact">
+                        <i class="fa fa-question-circle"></i>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="mailto:email@email.com?subject=email">
+                                <i class="fa fa-fw fa-envelope"></i> Contact Us
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="clickable" data-toggle="modal" data-target="#disclaimerModal">
+                                <i class="fa fa-fw fa-gavel"></i> Disclaimer
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- 
+            $$$$$$\  $$\       $$\           $$\                                 $$\      $$\                                     $$$$$$$$\                  $$\           
+            $$  __$$\ \__|      $$ |          $$ |                                $$$\    $$$ |                                    \__$$  __|                 $$ |          
+            $$ /  \__|$$\  $$$$$$$ | $$$$$$\  $$$$$$$\   $$$$$$\   $$$$$$\        $$$$\  $$$$ | $$$$$$\  $$$$$$$\  $$\   $$\          $$ | $$$$$$\   $$$$$$\  $$ | $$$$$$$\ 
+            \$$$$$$\  $$ |$$  __$$ |$$  __$$\ $$  __$$\  \____$$\ $$  __$$\       $$\$$\$$ $$ |$$  __$$\ $$  __$$\ $$ |  $$ |         $$ |$$  __$$\ $$  __$$\ $$ |$$  _____|
+            \____$$\ $$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ | $$$$$$$ |$$ |  \__|      $$ \$$$  $$ |$$$$$$$$ |$$ |  $$ |$$ |  $$ |         $$ |$$ /  $$ |$$ /  $$ |$$ |\$$$$$$\  
+            $$\   $$ |$$ |$$ |  $$ |$$   ____|$$ |  $$ |$$  __$$ |$$ |            $$ |\$  /$$ |$$   ____|$$ |  $$ |$$ |  $$ |         $$ |$$ |  $$ |$$ |  $$ |$$ | \____$$\ 
+            \$$$$$$  |$$ |\$$$$$$$ |\$$$$$$$\ $$$$$$$  |\$$$$$$$ |$$ |            $$ | \_/ $$ |\$$$$$$$\ $$ |  $$ |\$$$$$$  |         $$ |\$$$$$$  |\$$$$$$  |$$ |$$$$$$$  |
+            \______/ \__| \_______| \_______|\_______/  \_______|\__|            \__|     \__| \_______|\__|  \__| \______/          \__| \______/  \______/ \__|\_______/ 
+                                                                                                                                                                            
+                                                                                                                                                                            
+                                                                                                                                                                            
+            Sidebar Menu Tools
+            -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <!-- Layer List Button -->
+                        <a class="clickable" data-toggle="modal" data-target="#layersModal" title="Layer List">
+                            <i class="fa fa-fw fa-list" id="list-load"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Layer Attributes -->
+                        <a class="clickable" data-toggle="modal" data-target="#attributesModal"
+                            title="Layer's Attributes">
+                            <i class="fa fa-fw fa-info"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Search Button -->
+                        <a class="clickable" data-toggle="modal" data-target="#searchModal" title="Search Layer Attributes">
+                            <i class="fa fa-fw fa-search"></i>
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </nav>
+        <!-- Start Modals - Tool Panels -->
+        <!-- Start Modals - Tool Panels -->
+        <!-- Start Modals - Tool Panels -->
+        <!-- 
+        $$\                                                    $$\       $$\             $$\           $$\      $$\                 $$\           $$\ 
+        $$ |                                                   $$ |      \__|            $$ |          $$$\    $$$ |                $$ |          $$ |
+        $$ |      $$$$$$\  $$\   $$\  $$$$$$\   $$$$$$\        $$ |      $$\  $$$$$$$\ $$$$$$\         $$$$\  $$$$ | $$$$$$\   $$$$$$$ | $$$$$$\  $$ |
+        $$ |      \____$$\ $$ |  $$ |$$  __$$\ $$  __$$\       $$ |      $$ |$$  _____|\_$$  _|        $$\$$\$$ $$ |$$  __$$\ $$  __$$ | \____$$\ $$ |
+        $$ |      $$$$$$$ |$$ |  $$ |$$$$$$$$ |$$ |  \__|      $$ |      $$ |\$$$$$$\    $$ |          $$ \$$$  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |
+        $$ |     $$  __$$ |$$ |  $$ |$$   ____|$$ |            $$ |      $$ | \____$$\   $$ |$$\       $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |
+        $$$$$$$$\\$$$$$$$ |\$$$$$$$ |\$$$$$$$\ $$ |            $$$$$$$$\ $$ |$$$$$$$  |  \$$$$  |      $$ | \_/ $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |
+        \________|\_______| \____$$ | \_______|\__|            \________|\__|\_______/    \____/       \__|     \__| \______/  \_______| \_______|\__|
+                        $$\   $$ |                                                                                                                 
+                        \$$$$$$  |                                                                                                                 
+                            \______/                                                                                                                  
+        Layer List Modal
+        -->
+        <div class="modal left fade" id="layersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            <i class="fa fa-fw fa-list"></i>&nbsp;Layers
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="menu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+      
+
+
+        <!-- 
+        $$\                                $$\       $$\      $$\                           $$$$$$$\  $$\                  
+        $$ |                               $$ |      $$$\    $$$ |                          $$  __$$\ \__|                 
+        $$ |      $$$$$$\   $$$$$$\   $$$$$$$ |      $$$$\  $$$$ | $$$$$$\   $$$$$$\        $$ |  $$ |$$\ $$\    $$\       
+        $$ |     $$  __$$\  \____$$\ $$  __$$ |      $$\$$\$$ $$ | \____$$\ $$  __$$\       $$ |  $$ |$$ |\$$\  $$  |      
+        $$ |     $$ /  $$ | $$$$$$$ |$$ /  $$ |      $$ \$$$  $$ | $$$$$$$ |$$ /  $$ |      $$ |  $$ |$$ | \$$\$$  /       
+        $$ |     $$ |  $$ |$$  __$$ |$$ |  $$ |      $$ |\$  /$$ |$$  __$$ |$$ |  $$ |      $$ |  $$ |$$ |  \$$$  /        
+        $$$$$$$$\\$$$$$$  |\$$$$$$$ |\$$$$$$$ |      $$ | \_/ $$ |\$$$$$$$ |$$$$$$$  |      $$$$$$$  |$$ |   \$  /         
+        \________|\______/  \_______| \_______|      \__|     \__| \_______|$$  ____/       \_______/ \__|    \_/          
+                                                                            $$ |                                           
+                                                                            $$ |                                           
+                                                                            \__|                                           
+        Load Map Div 
+        -->
+        <div id="map"></div>
+        <!-- Load coordinates div (Part of Geolocation Modal)-->
+        <div id="coordinates" class="coordinates"></div>
+    </div>
+
+
+    <!-- 
+    $$$$$$$\            $$\            $$\              $$$$$\  $$$$$$\                                  $$\                                               $$\                           $$\       $$\       $$\ $$\                 
+    $$  __$$\           \__|           $$ |             \__$$ |$$  __$$\                                 $$ |                                              \__|                          $$ |      $$ |      \__|$$ |                
+    $$ |  $$ | $$$$$$\  $$\ $$$$$$$\ $$$$$$\               $$ |$$ /  \__|       $$$$$$\  $$$$$$$\   $$$$$$$ |       $$$$$$\   $$$$$$\   $$$$$$\  $$\   $$\ $$\  $$$$$$\   $$$$$$\   $$$$$$$ |      $$ |      $$\ $$$$$$$\   $$$$$$$\ 
+    $$$$$$$  |$$  __$$\ $$ |$$  __$$\\_$$  _|              $$ |\$$$$$$\         \____$$\ $$  __$$\ $$  __$$ |      $$  __$$\ $$  __$$\ $$  __$$\ $$ |  $$ |$$ |$$  __$$\ $$  __$$\ $$  __$$ |      $$ |      $$ |$$  __$$\ $$  _____|
+    $$  ____/ $$ |  \__|$$ |$$ |  $$ | $$ |          $$\   $$ | \____$$\        $$$$$$$ |$$ |  $$ |$$ /  $$ |      $$ |  \__|$$$$$$$$ |$$ /  $$ |$$ |  $$ |$$ |$$ |  \__|$$$$$$$$ |$$ /  $$ |      $$ |      $$ |$$ |  $$ |\$$$$$$\  
+    $$ |      $$ |      $$ |$$ |  $$ | $$ |$$\       $$ |  $$ |$$\   $$ |      $$  __$$ |$$ |  $$ |$$ |  $$ |      $$ |      $$   ____|$$ |  $$ |$$ |  $$ |$$ |$$ |      $$   ____|$$ |  $$ |      $$ |      $$ |$$ |  $$ | \____$$\ 
+    $$ |      $$ |      $$ |$$ |  $$ | \$$$$  |      \$$$$$$  |\$$$$$$  |      \$$$$$$$ |$$ |  $$ |\$$$$$$$ |      $$ |      \$$$$$$$\ \$$$$$$$ |\$$$$$$  |$$ |$$ |      \$$$$$$$\ \$$$$$$$ |      $$$$$$$$\ $$ |$$$$$$$  |$$$$$$$  |
+    \__|      \__|      \__|\__|  \__|  \____/        \______/  \______/        \_______|\__|  \__| \_______|      \__|       \_______| \____$$ | \______/ \__|\__|       \_______| \_______|      \________|\__|\_______/ \_______/ 
+                                                                                                                                            $$ |                                                                                    
+                                                                                                                                            $$ |                                                                                    
+                                                                                                                                            \__|                                                                                    
+    Print JS and required Libs
+    -->
+    <!-- cdn -->
+    <!--<script src='https://cdn.rawgit.com/blueimp/JavaScript-Canvas-to-Blob/master/js/canvas-to-blob.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.8.177/pdf.combined.min.js'></script>
+    <script src='https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js'></script>
+    <script src='https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js'></script>
+    <script src='https://cdn.rawgit.com/fengyuanchen/cropper/master/dist/cropper.min.js'></script>-->
+    <!-- local -->
+    <script src="assets/plugins/print-export/libs/canvas-to-blob.min.js"></script>
+    <script src="assets/plugins/print-export/libs/jspdf.min.js"></script>
+    <script src="assets/plugins/print-export/libs/pdf.combined.min.js"></script>
+    <script src="assets/plugins/print-export/libs/FileSaver.min.js"></script>
+    <script src="assets/plugins/print-export/libs/html2canvas.min.js"></script>
+    <script src="assets/plugins/print-export/libs/cropper.min.js"></script>
+    <script src="assets/js/print.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="assets/bootstrap/bootstrap.min.js"></script>
+    <!-- Leaflet JavaScript -->
+    <script src="assets/leaflet/leaflet.js"></script>
+    <!-- Map JavaScript -->
+    <script src="assets/js/map.js"></script>
+    <!-- Search Layer Config -->
+    <script src="assets/plugins/jsonSearch/layers.js"></script>
+    <!-- Layer Search Scripts -->
+    <script src="assets/plugins/jsonSearch/chosen/chosen.jquery.js"></script>
+    <script type="text/javascript">
+        $("#json_layer").change(function () {
+            $("#general_search").val("");
+            $("#property-descr").html("<br />");
+            var source_name = $('#json_layer').val();
+            refreshJsonSource(source_name);
+        });
+    </script>
+</body>
+
+</html>
+
+        <!-- 
+        $$\   $$\           $$\                           $$\ 
+        $$ |  $$ |          $$ |                          $$ |
+        $$ |  $$ | $$$$$$\  $$ | $$$$$$\   $$$$$$\   $$$$$$$ |
+        $$ |  $$ |$$  __$$\ $$ |$$  __$$\  \____$$\ $$  __$$ |
+        $$ |  $$ |$$ /  $$ |$$ |$$ /  $$ | $$$$$$$ |$$ /  $$ |
+        $$ |  $$ |$$ |  $$ |$$ |$$ |  $$ |$$  __$$ |$$ |  $$ |
+        \$$$$$$  |$$$$$$$  |$$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |
+        \______/ $$  ____/ \__| \______/  \_______| \_______|
+                $$ |                                        
+                $$ |                                        
+                \__|                                        
+        Upload
+        -->
+        <div class="modal left fade" id="uploadGeo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><i class="fas fa-globe"></i>&nbsp;Upload GeoJSON</h4>
+                    </div>
+                    <div class="modal-body">
+                        <hr>
+                        <br />
+                        <!-- paste data -->
+                        <div style="vertical-align:top;">
+                            <p style="font-size: 12px; vertical-align: text-top;">Paste Your geoJSON Below:</p>
+                            <textarea id="geoJSONTextBox" name="geoJSONtextBox" rows="4" cols="50" style="height:400px; width: 100%; font-size: 11px; padding: 2px; margin:2px">{'type': 'FeatureCollection','features': []}</textarea><br>
+                            <div style="padding-top:10px">
+                                <input type="button" value="upload" id="submitGeoJ" style="font-size: 10px;">
+                                <input type="button" value="clear" id="clearGeoJ" style="font-size: 10px;">
+                            </div>
+                        </div>
+                        <br />
+                        <hr>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 
+        $$$$$$\                                          $$\             $$\      $$\                 $$\           $$\ 
+        $$  __$$\                                         $$ |            $$$\    $$$ |                $$ |          $$ |
+        $$ /  \__| $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$$\ $$$$$$$\        $$$$\  $$$$ | $$$$$$\   $$$$$$$ | $$$$$$\  $$ |
+        \$$$$$$\  $$  __$$\  \____$$\ $$  __$$\ $$  _____|$$  __$$\       $$\$$\$$ $$ |$$  __$$\ $$  __$$ | \____$$\ $$ |
+        \____$$\ $$$$$$$$ | $$$$$$$ |$$ |  \__|$$ /      $$ |  $$ |      $$ \$$$  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |
+        $$\   $$ |$$   ____|$$  __$$ |$$ |      $$ |      $$ |  $$ |      $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |
+        \$$$$$$  |\$$$$$$$\ \$$$$$$$ |$$ |      \$$$$$$$\ $$ |  $$ |      $$ | \_/ $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |
+        \______/  \_______| \_______|\__|       \_______|\__|  \__|      \__|     \__| \______/  \_______| \_______|\__|
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+        Search Modal
+        -->
+        <div class="modal left fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            <i class="fa fa-fw fa-search"></i> &nbsp;Search Through Datsets
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p style="margin-bottom: -1px; padding: 0px 0px 5px 0px; width: 100%;">
+                            <br> Step 1. Pick DataSets...
+                        </p>
+                        <br>
+                        <!-- <select>
+                            <option value="0" default = "selected">Choose...</option>
+                            <option value="1">UFO Sitings</option>
+                            <option value="2">States Bounding Box</option>
+                            <option value="3">States</option>
+                            <option value="4">Rail Roads </option>
+                            <option value="5">Plane Crashes</option>
+                            </select>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <hr> -->
+
+                        <select class="dataset_picker" id="dataset" data-placeholder="Dataset Picker"></select>
+
+                        <p style="margin-bottom: -1px; padding: 0px 0px 5px 0px; width: 100%;">
+                            <br> Step 2. Start Searching Through Data...
+                        </p>
+                        <p style="margin-bottom: -1px; padding: 5px 5px 5px 5px; width: 100%; background-color: #fafafa; color: #528ea7; font-size: smaller; " id="property-descr">
+                            <br>
+                        </p>
+                        <div style="display: inline-flex;" id="target_layer">
+                            <!-- <input type="search" id="dataset_search" placeholder="Datasets"> -->
+                            <!-- <input type="search" id="dataSetInfo"> -->
+                            <br>
+                            <button class="clickable" type="submit" id="submit_dataset">
+                                <i class="fab fa-searchengin"></i>
+                                </button>
+                            <button class="clickable" type="submit" id="clear_dataset">
+                                <i class="fas fa-eraser"></i>
+                                </button>
+                        </div>
+                        <br>
+                        <hr>
+                        <br>
+                        <script>
+                            //Hide the dropdown box and set up the erase / clear button
+                            // $("#dataset").hide();
+                            $("#clear_dataset").click(function(event){
+                               $("#dataset_search").val("");
+                               $("#dataset").html("")
+                            });
+                            $("#dataset").click(function(event) {
+                                populateDataset();
+                            });
+                            console.log("hi");
+                            console.log($("#dataset").html())
+
+                            // //Grabs a state name out of the input box and displays it
+                            // $("#dataset").click(function(event){
+                            //     let set = $("#dataset option:selected").text();
+                            //     $("#dataset_search").val(set);
+                            //     $("#dataset").val("hello")
+                            //     console.log($("#dataset").val("hllo"))
+                            //     // $("#dataset").hide();
+                            // });
+                            
+                            // //Get the data set names
+                            // $("#sumbit_dataset").click(function(event){
+                            //     let dataset = $("#dataset_search").val();
+                            //     console.log(dataset_search.val())
+                            // });
+
+                            function populateDataset() {
+                                let set = $("#dataset").val();
+                                console.log(set);
+                                let html = '';
+
+                                $.get("http://localhost:8080/setlist", function (data) {
+                                    // console.log(data);
+                                    for (var i = 0; i < data['count']; i++) {
+                                    // console.log(data)
+                                        html += '<option>' + data['results'][i] + '</option>';
+                                    };
+
+                                    $('#dataset').attr("size", data['count']);
+                                    $('#dataset').html(html);
+                                    $('#dataset').show();
+                                    console.log($("#dataset").html())
+                                });
+                            }
+                            
+
+                            // //Allows user to hit enter to search for json property
+                            // $("#dataset_search").keyup(function(event) {
+                            //     if (event.keyCode == 13) {
+                            //         $("#submit_datset").click();
+                            //     }
+                            // });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+       <!--
+        $$$$$$$\  $$\                                 $$\      $$\                 $$\           $$\             
+        $$  __$$\ $$ |                                $$$\    $$$ |                $$ |          $$ |            
+        $$ |  $$ |$$$$$$$\   $$$$$$\  $$\   $$\       $$$$\  $$$$ | $$$$$$\   $$$$$$$ | $$$$$$\  $$ |            
+        $$$$$$$\ |$$  __$$\ $$  __$$\ \$$\ $$  |      $$\$$\$$ $$ |$$  __$$\ $$  __$$ | \____$$\ $$ |            
+        $$  __$$\ $$ |  $$ |$$ /  $$ | \$$$$  /       $$ \$$$  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |            
+        $$ |  $$ |$$ |  $$ |$$ |  $$ | $$  $$<        $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |            
+        $$$$$$$  |$$$$$$$  |\$$$$$$  |$$  /\$$\       $$ | \_/ $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |            
+        \_______/ \_______/  \______/ \__/  \__|      \__|     \__| \______/  \_______| \_______|\__|            
+                                                                                                                
+                                                                                                                
+                                                                                                                                                
+        Bbox Modal 
+        -->
+        <div class="modal left fade" id="bboxModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            <i class="fas fa-vector-square"></i></i>&nbsp;Display Bounding Box
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        <div style="display: inline-flex;" id="">
+                            <input type="search" id="pickState" placeholder="State" />
+                            <br />
+                            <button class="clickable" type="submit" id="searchState"><i
+                                    class="fa fa-search"></i></button>
+                            <button class="clickable" type="submit" id="clearState"><i
+                                    class="fa fa-eraser"></i></button>
+                        </div>
+
+                        <select class="state-picker" id="stateSelect">
+                        </select>
+
+
+                        <script>
+                            // Hides the dropdown list off the bat
+                            $('#stateSelect').hide();
+
+                            // Shows dropdown options as user types 
+                            $("#pickState").keyup(function (event) {
+                                populateStatesSelect();
+                            });
+
+                            // Clears search text and dropdown list
+                            $("#clearState").click(function (event) {
+                                $("#pickState").val("");
+                                $('#stateSelect').html("");
+                                $('#stateSelect').hide();
+                            });
+
+                            // Adds state to search bar when user clicks dropdown list
+                            $("#stateSelect").click(function (event) {
+                                let state = $("#stateSelect option:selected").text();
+                                $("#pickState").val(state);
+                                $('#stateSelect').hide();
+                                // console.log(state);
+
+                            });
+
+                            // adds bounding box to state on click
+                            $("#searchState").click(function (event) {
+                                let state = $("#pickState").val();
+                                $.get("http://localhost:8080/state_bbox?state=" + state, function (data) {
+                                    console.log(data['results'][0]['name']);
+                                    let results = data['results'][0];
+                                    console.log(results);
+
+                                    let xmax = results.xmax;
+                                    let xmin = results.xmin;
+                                    let ymax = results.ymax;
+                                    let ymin = results.ymin;
+
+                                    let lat = (ymin + ymax) / 2.0;
+                                    let lng = (xmin + xmax) / 2.0;
+
+                                    var center = [lng, lat];
+                                    console.log(center);
+
+                                    let coords = [
+                                        [xmin, ymax],
+                                        [xmax, ymax],
+                                        [xmax, ymin],
+                                        [xmin, ymin],
+                                        [xmin, ymax]
+                                    ];
+                                    let id = results.name + "line";
+                                    let geojson = build_geojson(coords, "LineString");
+                                    
+                                    addLayer(id, geojson);
+                                    addFlyTo(center, 5);
+
+                                });
+                            });
+
+                            // $("#searchState").click(function (event) {
+                            //     populateStatesSelect();
+                            // });
+
+                            function populateStatesSelect() {
+                                let filter = $("#pickState").val();
+                                let html = '';
+
+                                $.get("http://localhost:8080/states?filter=" + filter, function (data) {
+                                    // console.log(data);
+                                    for (var i = 0; i < data['count']; i++) {
+                                        html += '<option>' + data['results'][i]['name'] + '</option>';
+                                    };
+
+                                    $('#stateSelect').attr("size", data['count']);
+                                    $('#stateSelect').html(html);
+                                    $('#stateSelect').show();
+                                });
+                            }
+                            /*
+                            coords [array] " of a linestring or polygon
+                            feature_type : [Polygon, Linestring]"
+                            */
+                            function build_geojson(coords, feature_type) {
+                                var geojson = {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': feature_type,
+                                        'coordinates': coords
+                                    }
+                                };
+                                return geojson;
+                            }
+
+                            function addLayer(id, geojson) {
+                                console.log("ID" +id)
+                                console.log("GEOJSON" + geojson)
+                                map.addSource(id, {
+                                    'type': 'geojson',
+                                    'data': geojson
+                                });
+                                map.addLayer({
+                                    'id': id,
+                                    'type': 'line',
+                                    'source': id,
+                                    'layout': {
+                                        'line-join': 'round',
+                                        'line-cap': 'round'
+                                    },
+                                    'paint': {
+                                        'line-color': '#088',
+                                        'line-width': 8,
+                                        'line-opacity': 1
+                                    }
+                                });
+                            }
+
+                            function addFlyTo(cent, zoom) {
+                                map.flyTo({
+                                    center: cent,
+                                    essential: true,
+                                    zoom: zoom
+                                });
+                            }
+
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
