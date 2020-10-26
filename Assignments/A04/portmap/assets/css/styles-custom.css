@@ -318,3 +318,14 @@ $$ | $$ | $$ |\$$$$$$$ |      $$$$$$$  |  \$$$$  |\$$$$$$  |$$ |      $$ |
     border: none;
     cursor: pointer;
 }
+.city-picker {
+    padding: 8px 8px;
+    width: 211px;
+    background: #e8e8e8;
+
+    border: none;
+    border-right: none;
+    font-size: 9pt;
+    border-radius: 0;
+    -webkit-appearance: none;
+}

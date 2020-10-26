@@ -243,6 +243,27 @@
                             <i class="fa fa-fw fa-list" id="list-load"></i>
                         </a>
                     </li>
+                    <li>
+                        <!-- Coordinates/Address Button -->
+                        <a class="clickable" data-toggle="modal" data-target="#geolocationModal"
+                            title="Search Address & Coords.">
+                            <i class="fas fa-fw fa-map-marker-alt"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- City Button -->
+                        <a class="clickable" data-toggle="modal" data-target="#cityModal"
+                            title="Display Minimum Area Bounding Rectangle">
+                            <i class="fas fa-city"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- MABR Button -->
+                        <a class="clickable" data-toggle="modal" data-target="#mabrModal"
+                            title="Display Minimum Area Bounding Rectangle">
+                            <i class="far fa-square"></i>
+                        </a>
+                    </li>
                     <!-- <li>
                         Layer Attributes 
                         <a class="clickable" data-toggle="modal" data-target="#attributesModal"
@@ -272,13 +293,6 @@
                         </a>
                     </li> -->
                     <li>
-                        <!-- Coordinates/Address Button -->
-                        <a class="clickable" data-toggle="modal" data-target="#geolocationModal"
-                            title="Search Address & Coords.">
-                            <i class="fas fa-fw fa-map-marker-alt"></i>
-                        </a>
-                    </li>
-                    <li>
                         <!-- Search Button -->
                         <a class="clickable" data-toggle="modal" data-target="#searchModal"
                             title="Search Layer Attributes">
@@ -291,14 +305,6 @@
                             <i class="fas fa-vector-square"></i>
                         </a>
                     </li>
-                    <li>
-                        <!-- MABR Button -->
-                        <a class="clickable" data-toggle="modal" data-target="#mabrModal"
-                            title="Display Minimum Area Bounding Rectangle">
-                            <i class="far fa-square"></i>
-                        </a>
-                    </li>
-
                     <!-- <li>
                         Print Map Button
                         <a class="stop-print-click" id="mapboxgl-ctrl-print" data-toggle="modal"
@@ -323,7 +329,8 @@
         \________|\_______| \____$$ | \_______|\__|            \________|\__|\_______/    \____/       \__|     \__| \______/  \_______| \_______|\__|
                         $$\   $$ |                                                                                                                 
                         \$$$$$$  |                                                                                                                 
-                            \______/                                                                                                                  
+        
+                        \______/                                                                                                                  
         Layer List Modal
         -->
         <div class="modal left fade" id="layersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -545,10 +552,11 @@
         $$ |     $$ |  $$ |$$ |     $$  __$$ | $$ |$$\ $$ |$$ |  $$ |$$ |  $$ |      $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |
         $$$$$$$$\\$$$$$$  |\$$$$$$$\\$$$$$$$ | \$$$$  |$$ |\$$$$$$  |$$ |  $$ |      $$ | \_/ $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |
         \________|\______/  \_______|\_______|  \____/ \__| \______/ \__|  \__|      \__|     \__| \______/  \_______| \_______|\__|
-         Location Modal                                                                                                                           
+         Location Modal        
+         Lets the user select a point on the map and place a marker                                                                                                                   
                                                                                                                                     
                                                                                                                                      -->
-        <div class="modal left fade" id="geolocationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal left fade" id="geolocationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -594,17 +602,8 @@
                         <pre id="info">
                                 <i class="fa fa-fw fa-globe"></i> lng/lat
                             </pre>
-                        <br>
-                        <hr>
-                        <br>
-                        <!-- address geocode api-->
-                        <p style="font-size: 12px">
-                            <i class="fas fa-home"></i> Address Search:
-                        </p>
-                        <div id="addressAppend"></div>
-                        <br>
-                        <hr>
-                        <br>
+
+
                     </div>
                 </div>
             </div>
@@ -802,9 +801,299 @@
     </script>
 
     <!--
-Line Modal
-Line Modal
--->
+        $$$$$$\  $$\   $$\                     $$\      $$\                 $$\           $$\ 
+        $$  __$$\ \__|  $$ |                    $$$\    $$$ |                $$ |          $$ |
+        $$ /  \__|$$\ $$$$$$\   $$\   $$\       $$$$\  $$$$ | $$$$$$\   $$$$$$$ | $$$$$$\  $$ |
+        $$ |      $$ |\_$$  _|  $$ |  $$ |      $$\$$\$$ $$ |$$  __$$\ $$  __$$ | \____$$\ $$ |
+        $$ |      $$ |  $$ |    $$ |  $$ |      $$ \$$$  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |
+        $$ |  $$\ $$ |  $$ |$$\ $$ |  $$ |      $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |
+        \$$$$$$  |$$ |  \$$$$  |\$$$$$$$ |      $$ | \_/ $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |
+        \______/ \__|   \____/  \____$$ |      \__|     \__| \______/  \_______| \_______|\__|
+                                $$\   $$ |                                                     
+                                \$$$$$$  |                                                     
+                                \______/                                                      
+        City Modal
+        Draws a line between two cities that are selected by the user.
+        Also shows the distance between the two points
+        -->
+    <div class="modal left fade" id="cityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fas fa-city"></i>&nbsp;Draw a line between two cities
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+
+                    City 1
+                    <div style="display: inline-flex;" id="">
+                        <input type="search" id="pickCity1" placeholder="City" />
+                        <br />
+                        <button class="clickable" type="submit" id="clearCity1"><i class="fa fa-eraser"></i></button>
+                        <br>
+                    </div>
+
+                    <div> <select class="city-picker" id="citySelect1"></select></div>
+                    <br>
+                    <div style="font-size:xx-small; margin:0" id=lonlat1>
+                        Longitude
+                        <pre id="lng1"></pre>
+                        Latitude
+                        <pre id="lat1"></pre>
+                    </div>
+                    <br>
+                    City 2
+                    <div style="display: inline-flex;" id="">
+                        <input type="search" id="pickCity2" placeholder="City" />
+                        <br />
+                        <button class="clickable" type="submit" id="clearCity2"><i class="fa fa-eraser"></i></button>
+                        <br>
+                    </div>
+                    <div>
+                        <select class="city-picker" id="citySelect2"></select>
+                    </div>
+                    <br>
+                    <div style="font-size:xx-small; margin:0" id=lonlat2>
+                        Longitude
+                        <pre id="lng2"></pre>
+                        Latitude
+                        <pre id="lat2"></pre>
+                    </div>
+                    <br>
+                    <input type="button" value="Draw Line" id="drawLineButton" style="font-size: 10px;">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div style="font-size:xx-small; margin:0" id=distMiles>
+                        Distance(Miles)
+                        <pre id="distanceMiles"></pre>
+                    </div>
+                    <br>
+                    <div style="font-size:xx-small; margin:0" id=distKM>
+                        Distance(Kilometers)
+                        <pre id="distanceKM"></pre>
+                    </div>
+                </div>
+
+            </div>
+            <script>
+
+                var city1, city2, lng1, lat1, lng2, lat2, coords = []
+                $("#lonlat1").hide()
+                $("#lonlat2").hide()
+                $("#distMiles").hide()
+                $("#distKM").hide()
+
+                $('#citySelect1').hide();
+                $('#citySelect2').hide();
+
+                // Shows dropdown options as user types 
+                $("#pickCity1").keyup(function (event) {
+                    populateCitySelect("pickCity1", "citySelect1");
+                });
+                $("#pickCity2").keyup(function (event) {
+                    populateCitySelect("pickCity2", "citySelect2");
+                });
+
+                // Clears search text and dropdown list
+                $("#clearCity1").click(function (event) {
+                    $("#pickCity1").val("");
+                    $('#citySelect1').html("");
+                    $('#citySelect1').hide();
+                    $("#lonlat1").hide()
+                    $("#distMiles").hide()
+                    $("#distKM").hide()
+                });
+                $("#clearCity2").click(function (event) {
+                    $("#pickCity2").val("");
+                    $('#citySelect2').html("");
+                    $('#citySelect2').hide();
+                    $("#lonlat2").hide()
+                    $("#distMiles").hide()
+                    $("#distKM").hide()
+                });
+
+                // Adds city to search bar when user clicks dropdown list
+                $("#citySelect1").click(function (event) {
+                    city1 = $("#citySelect1 option:selected").text();
+                    console.log(city1)
+                    $("#pickCity1").val(city1);
+                    $('#citySelect1').hide();
+                    // $("#lng1").text
+                    lng1 = getlng1(city1)
+                    lat1 = getlat1(city1)
+                    $("#lonlat1").show()
+                    // console.log(lng1 + " " + lat1)
+                });
+                $("#citySelect2").click(function (event) {
+                    city2 = $("#citySelect2 option:selected").text();
+                    $("#pickCity2").val(city2);
+                    $('#citySelect2').hide();
+                    lng2 = getlng2(city2)
+                    lat2 = getlat2(city2)
+                    $("#lonlat2").show()
+                    // console.log(lng1 + " " + lat1 + " " + lng2 + " " + lat2)
+                });
+
+                //Draws line from city1 to city2
+                $("#drawLineButton").click(function (event) {
+                    $("#distMiles").show()
+                    $("#distKM").show()
+                    console.log(lng1)
+                    console.log(city1)
+
+                    lng1 = $("#lng1").text()
+                    lat1 = $("#lat1").text()
+                    lng2 = $("#lng2").text()
+                    lat2 = $("#lat2").text()
+
+                    // console.log(lng1 + " " + lat1 + " " + lng2 + " " + lat2)
+                    $.get('http://localhost:8080/distance?lng1=' + lng1 + '&lat1=' + lat1 + '&lng2=' + lng2 + '&lat2=' + lat2, function (data) {
+
+                        $("#distanceMiles").text(data['miles'])
+                        $("#distanceKM").text(data['miles'] * 1.609344)
+
+                    });
+                    id = "line" + Math.random()
+
+                    map.addSource(id, {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': [
+                                    [lng1, lat1],
+                                    [lng2, lat2]
+                                ]
+                            }
+                        }
+                    });
+
+                    map.addLayer({
+                        'id': id,
+                        'type': 'line',
+                        'source': id,
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        'paint': {
+                            'line-color': '#0F0',
+                            'line-width': 8
+                        }
+                    });
+                });
+
+                //Adds cities to the dropdown list as the user types
+                function populateCitySelect(pickCity, citySelect) {
+                    let filter = $("#" + pickCity).val();
+                    // console.log(pickCity)
+                    // console.log(citySelect)
+                    let html = '';
+
+                    //gets city list
+                    $.get("http://localhost:8080/cities?city=" + filter, function (data) {
+                        for (var key in data['results']) {
+                            html += '<option>' + key + '</option>';
+                        };
+                        // console.log(data['results'])
+                        // console.log(html)
+                        $("#" + citySelect).attr("size", data['count']);
+                        $("#" + citySelect).html(html);
+                        $("#" + citySelect).show();
+                    });
+
+
+                    // $("#" + citySelect).click(function (event) {
+                    //     // console.log("functionclick")
+                    //     city = $("#" + citySelect + " option:selected").text();
+                    //     console.log(city)
+                    //     $("#" + pickCity).val(city);
+                    //     $("#" + citySelect).hide();
+                    //     coords = data['results'][key]
+                    //     console.log(coords)
+                    //     // coord = ['results'][i]['properties']['name']
+                    // });
+                }
+
+
+                // function getCoords(city) {
+                //     $.get("http://localhost:8080/cities?city=" + city, function (data) {
+                //         // console.log(city)
+
+                //         coords.push( data['results'][city][0])
+                //         coords.push(data['results'][city][1])
+                //         console.log(coords[0])
+                //         return coords
+
+                //     });
+
+
+                // }
+
+
+
+                // Have no clue why I have to do this stuff below as opposed to the function above. 
+                // It's the only way I can use data without it "not being defined"
+                function getlng1(city) {
+                    $.get("http://localhost:8080/cities?city=" + city, function (data) {
+
+                        var lng1 = data['results'][city][0]
+                        $("#lng1").text(lng1)
+                        console.log("lng: " + lng1)
+                        return lng1
+                    });
+                }
+
+                function getlat1(city) {
+                    $.get("http://localhost:8080/cities?city=" + city, function (data) {
+                        // console.log(city)
+                        var lat1 = data['results'][city][1]
+                        $("#lat1").text(lat1)
+                        console.log("lat: " + lat1)
+                        return lat1
+                    });
+                }
+                function getlng2(city) {
+                    $.get("http://localhost:8080/cities?city=" + city, function (data) {
+
+                        var lng2 = data['results'][city][0]
+                        $("#lng2").text(lng2)
+                        console.log("lng: " + lng2)
+                        return lng2
+                    });
+                }
+
+                function getlat2(city) {
+                    $.get("http://localhost:8080/cities?city=" + city, function (data) {
+                        // console.log(city)
+                        var lat2 = data['results'][city][1]
+                        $("#lat2").text(lat2)
+                        console.log("lat: " + lat2)
+                        return lat2
+                    });
+                }
+            </script>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
 
 
 
@@ -821,6 +1110,8 @@ Line Modal
                                                                                                         
                                                                                                         
             MABR Modal
+            Shows all the points that exist inside a minimum area bounding rectangle whose size and position are
+            user defined
             -->
     <div class="modal left fade" id="mabrModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -830,22 +1121,21 @@ Line Modal
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        <i class="far fa-square"></i>&nbsp;Minimum Area Bounding Recatangle and Polygon Tools
+                        <i class="far fa-square"></i>&nbsp;Minimum Area Bounding Recatangle
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <hr>
-                    <input type="button" value="Bounding Box" id="bboxButton" style="font-size: 10px;">
-                    <input type="button" value="stop Bounding Box" id="stopBboxButton" style="font-size: 10px;">
-                    <br>
-                    <p style="font-size: 12px">
-                        <i class="far fa-square"></i> Use the Draw tools to create
+                    <p>Click on the Bounding Box button to start. Then click two points on the map.
+                        The points you click will be the diagonally opposite corners of a rectangle.
+                        All points from the dataset inside your bounding box will appear on the map.
+                        To stop, click the Stop Bounding Box button.
                     </p>
+                    <input type="button" value="Bounding Box" id="bboxButton" style="font-size: 10px;">
+                    <input type="button" value="Stop Bounding Box" id="stopBboxButton" style="font-size: 10px;">
+                    <br>
                     <div id="drawAppend"></div>
                     <script>
-
-
-
+                        $("#drawAppend").hide()
                         var draw = new MapboxDraw({
                             // this is used to allow for custom properties for styling draw features
                             // it appends the word "user_" to the property
@@ -859,13 +1149,14 @@ Line Modal
                             }
 
                         });
-
                         var drawTool = document.getElementById('drawAppend');
                         drawTool.appendChild(draw.onAdd(map)).setAttribute("style", "display: inline-flex;", "border: 0;");
 
 
                         var stopBbox = false;
-
+                        // allows the user to place points on the map.
+                        // every two points create a bounding box in which the points are the northeast and southwest corners
+                        // any points inside the bounding box are shown on the map
                         document.getElementById('bboxButton').onclick = function () {
                             var rectArray = []
                             stopBbox = false;
@@ -877,13 +1168,13 @@ Line Modal
                                     rectArray.push(point);
 
                                     if (rectArray.length == 2 && stopBbox == false) {
-
+                                        //get all 4 corners for the bounding box
                                         xmin = rectArray[0]["lng"];
                                         ymax = rectArray[0]["lat"];
                                         xmax = rectArray[1]["lng"];
                                         ymin = rectArray[1]["lat"];
 
-
+                                        // calculate midpoint
                                         let lat = (ymin + ymax) / 2.0;
                                         let lng = (xmin + xmax) / 2.0;
 
@@ -897,6 +1188,7 @@ Line Modal
                                             [xmin, ymin],
                                             [xmin, ymax]
                                         ];
+
                                         let id = "bbox" + Math.random();
                                         let geojson = build_geojson(coords, "LineString");
                                         addLayer(id, geojson);
@@ -929,6 +1221,7 @@ Line Modal
 
 
                                             });
+                                        //reset array since I test its size
                                         rectArray = [];
 
                                     }
@@ -937,6 +1230,7 @@ Line Modal
                             }
 
                         }
+                        // allows the user to stop drawing boudning boxes
                         document.getElementById('stopBboxButton').onclick = function () {
                             draw.changeMode("simple_select");
                             map.on(touchEvent, function (e) {
@@ -953,51 +1247,6 @@ Line Modal
     </div>
 
 
-    <!-- <div class="modal left fade" id="mabrModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            <i class="far fa-square"></i>&nbsp;Minimum Area Bounding Recatangle
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <hr>
-                        <br>
-                        lng/lat for top left
-                        <input type="button" value="Set top-left corner" id="mabrTopLeft" style="font-size: 10px;">
-                        <p style="font-size: 12px">
-                            <i class="fas fa-mouse-pointer"></i> Click on a button and then the map to enter lng/lat:
-                        </p>
-                        <pre id="mabrTopLeftInfo">
-                                <i class="fa fa-fw fa-globe"></i> lng/lat
-                            </pre>
-                        <br>
-                        lng/lat for bottom right
-                        <input type="button" value="Set top-left corner" id="mabrTopLeft" style="font-size: 10px;">
-                        <p style="font-size: 12px">
-                            <i class="fas fa-mouse-pointer"></i> Click on a button and then the map to enter lng/lat:
-                        </p>
-                        <pre id="mabrTopLeftInfo">
-                                <i class="fa fa-fw fa-globe"></i> lng/lat
-                            </pre>
-                        <br>
-                        <hr>
-                        <br>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-
-
-
-
-
-
     <!-- 
         $$$$$$$$\                    $$\           $$\      $$\                 $$\           $$\ 
         \__$$  __|                   $$ |          $$$\    $$$ |                $$ |          $$ |
@@ -1011,6 +1260,7 @@ Line Modal
                                                                                                 
                                                                                                 
         Text Modal
+        Shows points on a map based on geojson text pasted into a text area
         -->
     <div class="modal left fade" id="textModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -1087,7 +1337,7 @@ Line Modal
                                 $("#textArea").val("");
                             });
 
-                            // Show points
+                            // Show points based on the text in the text area
                             $("#textSubmit").click(function (event) {
                                 var textCoords = $("#textArea").val();
                                 textCoords = JSON.parse(textCoords);
@@ -1136,6 +1386,7 @@ Line Modal
                                                                                                             \$$$$$$  |                                        
                                                                                                             \______/                                         
         Nearest Neighbor
+        // Finds the x nearest neighbors to a point the user selects
         -->
     <div class="modal left fade" id="nearestNeighborModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -1183,9 +1434,12 @@ Line Modal
                     </pre>
                     <br>
                     <script>
+                        $("#neighborCoords").hide()
+                        // get the lng/lat from where the user clicks
                         map.on(touchEvent, function (e) {
                             document.getElementById('neighborCoords').innerHTML =
                                 JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
+                            $("#neighborCoords").show()
                         });
 
                         map.on('load', function () {
@@ -1202,7 +1456,7 @@ Line Modal
 
 
 
-                                //create
+                                //user enters lng/lat and this finds the nearest neighbors
                                 $('#findNNButton').click(function () {
 
                                     var enterLng = +document.getElementById('NNlngInput').value
@@ -1215,6 +1469,7 @@ Line Modal
                                     console.log("enterLL")
                                     console.log(enterLL)
 
+                                    //pass coordinates and number of desired neighbors to find to the backend and show the points
                                     $.get('http://localhost:8080/neighbor?lon=' + enterLng + '&lat=' + enterLat + '&num=' + num)
                                         .done(function (coords) {
                                             console.log(coords);
@@ -1255,49 +1510,6 @@ Line Modal
 
 
 
-
-    <!-- 
-        $$\   $$\           $$\                           $$\ 
-        $$ |  $$ |          $$ |                          $$ |
-        $$ |  $$ | $$$$$$\  $$ | $$$$$$\   $$$$$$\   $$$$$$$ |
-        $$ |  $$ |$$  __$$\ $$ |$$  __$$\  \____$$\ $$  __$$ |
-        $$ |  $$ |$$ /  $$ |$$ |$$ /  $$ | $$$$$$$ |$$ /  $$ |
-        $$ |  $$ |$$ |  $$ |$$ |$$ |  $$ |$$  __$$ |$$ |  $$ |
-        \$$$$$$  |$$$$$$$  |$$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |
-        \______/ $$  ____/ \__| \______/  \_______| \_______|
-                $$ |                                        
-                $$ |                                        
-                \__|                                        
-        Upload
-        -->
-    <div class="modal left fade" id="uploadGeo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><i class="fas fa-globe"></i>&nbsp;Upload GeoJSON</h4>
-                </div>
-                <div class="modal-body">
-                    <hr>
-                    <br />
-                    <!-- paste data -->
-                    <div style="vertical-align:top;">
-                        <p style="font-size: 12px; vertical-align: text-top;">Paste Your geoJSON Below:</p>
-                        <textarea id="geoJSONTextBox" name="geoJSONtextBox" rows="4" cols="50"
-                            style="height:400px; width: 100%; font-size: 11px; padding: 2px; margin:2px">{'type': 'FeatureCollection','features': []}</textarea><br>
-                        <div style="padding-top:10px">
-                            <input type="button" value="upload" id="submitGeoJ" style="font-size: 10px;">
-                            <input type="button" value="clear" id="clearGeoJ" style="font-size: 10px;">
-                        </div>
-                    </div>
-                    <br />
-                    <hr>
-                    <br />
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- 
@@ -1365,8 +1577,8 @@ Line Modal
                         $("#dataset").click(function (event) {
                             populateDataset();
                         });
-                        console.log("hi");
-                        console.log($("#dataset").html())
+                        // console.log("hi");
+                        // console.log($("#dataset").html())
 
 
                         function populateDataset() {
@@ -1384,7 +1596,7 @@ Line Modal
                                 $('#dataset').attr("size", data['count']);
                                 $('#dataset').html(html);
                                 $('#dataset').show();
-                                console.log($("#dataset").html())
+                                // console.log($("#dataset").html())
                             });
                         }
 
@@ -1410,6 +1622,7 @@ Line Modal
                                                                                                                 
                                                                                                                                                 
         Bbox Modal 
+        // Puts a bounding box around the state a user selects
         -->
     <div class="modal left fade" id="bboxModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">

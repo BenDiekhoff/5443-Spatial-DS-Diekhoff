@@ -1,1 +1,1 @@
-180
+    print(data)

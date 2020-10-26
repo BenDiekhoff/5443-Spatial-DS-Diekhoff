@@ -73,8 +73,8 @@ var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken
 });
 
-var addressTool = document.getElementById('addressAppend');
-addressTool.appendChild(geocoder.onAdd(map))
+// var addressTool = document.getElementById('addressAppend');
+// addressTool.appendChild(geocoder.onAdd(map))
 
 map.on('load', function () {
     map.addSource('geocode-point', {
@@ -118,68 +118,69 @@ map.on('load', function () {
 //Enter Lat Long
 //Enter Lat Long
 
+$("#info").hide()
 map.on('load', function () {
 
-    $(document).ready(function () {
+$(document).ready(function () {
 
 
-        //clear
-        $('#findLLButtonClear').click(function () {
+    //clear
+    $('#findLLButtonClear').click(function () {
 
+        map.removeLayer("enterLL");
+        map.removeSource("enterLL");
+
+        if (map.getLayer("enterLL")) {
             map.removeLayer("enterLL");
             map.removeSource("enterLL");
+        }
 
-            if (map.getLayer("enterLL")) {
-                map.removeLayer("enterLL");
-                map.removeSource("enterLL");
-            }
+    });
 
+    //create
+    $('#findLLButton').click(function () {
+
+        var enterLng = +document.getElementById('lngInput').value
+        var enterLat = +document.getElementById('latInput').value
+
+        var enterLL = turf.point([enterLng, enterLat]);
+        console.log(enterLL)
+
+        map.addSource('enterLL', {
+            type: 'geojson',
+            data: enterLL
         });
 
-        //create
-        $('#findLLButton').click(function () {
+        map.addLayer({
+            id: 'enterLL',
+            type: 'circle',
+            source: 'enterLL',
+            layout: {
 
-            var enterLng = +document.getElementById('lngInput').value
-            var enterLat = +document.getElementById('latInput').value
+            },
+            paint: {
+                "circle-color": 'red',
+                "circle-radius": 8,
+            },
+        });
 
-            var enterLL = turf.point([enterLng, enterLat]);
-            console.log(enterLL)
-
-            map.addSource('enterLL', {
-                type: 'geojson',
-                data: enterLL
-            });
-
-            map.addLayer({
-                id: 'enterLL',
-                type: 'circle',
-                source: 'enterLL',
-                layout: {
-
-                },
-                paint: {
-                    "circle-color": 'red',
-                    "circle-radius": 8,
-                },
-            });
-
-            map.flyTo({
-                center: [enterLng, enterLat]
-            });
-
+        map.flyTo({
+            center: [enterLng, enterLat]
         });
 
     });
+
+});
 });
 
 // Coordinates Tool
 // Coordinates Tool
 // Coordinates Tool
 map.on(touchEvent, function (e) {
-    document.getElementById('info').innerHTML =
-        JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
+$("#info").show()
+document.getElementById('info').innerHTML =
+    JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
 });
-
 //$$\                                                    $$$$$$$$\                            
 //$$ |                                                   \__$$  __|                           
 //$$ |      $$$$$$\  $$\   $$\  $$$$$$\   $$$$$$\           $$ | $$$$$$\   $$$$$$\   $$$$$$\  
