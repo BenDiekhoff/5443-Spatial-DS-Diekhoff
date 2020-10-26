@@ -57,10 +57,13 @@ UFOS = load_data('Assignments/A04/Data/fixed_ufos.geojson')
 EZUFOS =load_data('Assignments/A04/Data/ufos.geojson')
 CITIES = load_data('Assignments/A04/Data/major_cities.geojson')
 
+MCITIES = load_data('Assignments/A04/Data/World_Cities.geojson') #added this
+
 CELL = load_data('Assignments/A04/Data/cellular.geojson')
 STATE_BBOXES = load_data('Assignments/A04/Data/US_State_Bounding_Boxes.csv')
 STATES = load_data('Assignments/A04/Data/states.json')
 RRS =load_data("Assignments/A04/Data/easyRRS.geojson")#us_railroads_with_states.geojson")
+RRS2 = load_data('/Users/Ben-Study/Desktop/New folder/5443-Spatial-DS-Diekhoff/Assignments/A04/Data/us_railroads.geojson')
 
 
 EARTHQUAKES = glob.glob("Assignments/A04/Data/earthquake_data/*.json")
@@ -72,8 +75,8 @@ for city in CITIES['features']:
 CITIES = cityDict
 # print(CITIES)
 
-setNames = ['UFOS','EZUFOS', 'CITIES', 'CELL', 'STATE_BBOXES', 'STATES', 'RRS', 'EARTHQUAKES']
-dataSets = [UFOS,EZUFOS, CITIES, CELL, STATE_BBOXES, STATES, RRS, EARTHQUAKES]
+setNames = ['UFOS','EZUFOS', 'MCITIES','CITIES', 'CELL', 'STATE_BBOXES', 'STATES', 'RRS','RRS2', 'EARTHQUAKES']
+dataSets = [UFOS,EZUFOS, MCITIES,CITIES, CELL, STATE_BBOXES, STATES, RRS, RRS2,EARTHQUAKES]
 
 
 
@@ -213,12 +216,48 @@ def getDataSet():
     name = request.args.get('set', None)
     global dataSets
     global setNames
-
+   
     for i in range(len(setNames)):
         if name == setNames[i]:
             sid = i
+            # if dataSets[i] == 'MCITIES':
+            #     result = MCITIES
+            #     print(MCITIES)
+            # elif  dataSets[i] == 'RRS2':
+            #     result = RRS2
+            # elif dataSets[i] == 'CELL':
+            #     result = CELL
+            # else:
+            #     result = dataSets[i]
+                
             return handle_response(dataSets[sid], sid)
 
+@app.route("/layerdataset", methods=["GET"])
+def getLayerData():
+    """
+    Loads data sets and sends to layers
+    set (str): the dataset you want to load
+    Example: http://localhost:8080/layerdataset?set=<setname>
+
+    """
+    name = request.args.get('set', None)
+    global dataSets
+    global setNames
+    result = name
+    for i in range(len(setNames)):
+        if name == setNames[i]:
+            sid = i
+            if dataSets[i] == 'MCITIES':
+                result = MCITIES
+                print(MCITIES)
+            elif  dataSets[i] == 'RRS2':
+                result = RRS2
+            elif dataSets[i] == 'CELL':
+                result = CELL
+            else:
+                result = dataSets[i]
+                
+            return result
 
 @app.route("/setlist", methods=["GET"])
 def getSetList():
@@ -376,37 +415,6 @@ def railroad():
 # $$ |
 # \__|
 
-# def handle_response(data,params=None,error=None):
-#     """ handle_response
-#     """
-#     success = True
-
-#     # print(data)
-#     if data:
-#         if params=='dict':
-#             pass
-#             count = len(data)
-
-#         elif not isinstance(data,list):
-#             data = [data]
-#         count = len(data)
-#     else:
-#         count = 0
-#         error = "Data variable is empty!"
-
-
-#     result = {"success":success,"count":count,"results":data,"params":params}
-
-#     if error:
-#         success = False
-
-#         result['error'] = error
-
-#     print(f"DATA TYPE of result is {type(result)}")
-#     print(f"DATA TYPE of jsonify result {type(jsonify(result))}")
-#     return jsonify(result)
-
-
 def handle_response(data,params=None,error=None):
     """ handle_response
     """
@@ -426,8 +434,8 @@ def handle_response(data,params=None,error=None):
         error = "Data variable is empty!"
 
 
-    # result = {"success":success,"count":count,"results":data,"params":params}
-    result = data
+    result = {"success":success,"count":count,"results":data,"params":params}
+
     if error:
         success = False
 
@@ -436,6 +444,39 @@ def handle_response(data,params=None,error=None):
     print(f"DATA TYPE of result is {type(result)}")
     print(f"DATA TYPE of jsonify result {type(jsonify(result))}")
     return jsonify(result)
+
+
+def handle_response2(data,params=None,error=None):
+    """ handle_response
+    """
+    success = True
+
+    # print(data)
+    if data:
+        if params=='dict':
+            pass
+            count = len(data)
+
+        elif not isinstance(data,list):
+            data = [data]
+        count = len(data)
+    else:
+        count = 0
+        error = "Data variable is empty!"
+
+
+    #result = {"success":success,"count":count,"results":data,"params":params}
+    # result = {"success":success,"count":count,"Features":data}
+    result = data
+
+    if error:
+        success = False
+
+        result['error'] = error
+
+    # print(f"DATA TYPE of result is {type(result)}")
+    # print(f"DATA TYPE of jsonify result {type(jsonify(result))}")
+    return jsonify(result) #jsonify(result)
 
 
 def formatHelp(route):
@@ -512,8 +553,8 @@ def toGeoJson(data, dtype):
 
 if __name__ == '__main__':
 
-    # tree, coords = getTree()
-    # idx, rtreeID = getRTree()
+    tree, coords = getTree()
+    idx, rtreeID = getRTree()
     app.run(host='localhost', port=8080,debug=True)
     getRailroadRTree()
 

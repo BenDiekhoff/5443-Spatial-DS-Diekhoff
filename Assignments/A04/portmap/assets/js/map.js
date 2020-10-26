@@ -205,22 +205,7 @@ var emptyGJ = {
 
 map.on('load', function () {
 
-    // map.addSource('ufo', { type: 'geojson', data: emptyGJ });
-    // map.addLayer({
-    //     "id": "ufo",
-    //     "type": "ufo",
-    //     "source": "ufo",
-    //     "layout": {
-    //         // "visibility": 'none'
-    //     },
-    //     "paint": {
-    //         'circle-color': 'white',
-    //         'circle-opacity': 1.0,
-    //         'circle-stroke-color': '#ff8c1a',
-    //         'circle-stroke-width': 2,
-    //         'circle-stroke-opacity': 1.0,
-    //     }
-    // });
+ 
 
     //monster layers
     //Mr. Claw layer sources
@@ -364,7 +349,7 @@ map.on('load', function () {
         }
     });
 
-
+  
     map.addSource('populated', { type: 'geojson', data: emptyGJ });
     map.addLayer({
         "id": "populated",
@@ -416,11 +401,11 @@ map.on('load', function () {
     });
 
     // Ben
-    map.addSource('EZUFOS', { type: 'geojson', data: emptyGJ });
+    map.addSource('cell', { type: 'geojson', data: emptyGJ });
     map.addLayer({
-        "id": "EZUFOS",
-        "type": "point",
-        "source": "EZUFOS",
+        "id": "cell",
+        "type": "circle",
+        "source": "cell",
         "layout": {
             "visibility": 'none'
         },
@@ -432,8 +417,53 @@ map.on('load', function () {
             'circle-stroke-opacity': 1.0,
         }
     });
-
-
+    console.log(cell)
+    map.addSource('earthqu', { type: 'geojson', data: emptyGJ });
+    map.addLayer({
+        "id": "earthqu",
+        "type": "circle",
+        "source": "earthqu",
+        "layout": {
+            "visibility": 'none'
+        },
+        "paint": {
+            'circle-color': 'white',
+            'circle-opacity': 1.0,
+            'circle-stroke-color': 'purple',
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': 1.0,
+        }
+    });
+    map.addSource('mcities', { type: 'geojson', data: emptyGJ });
+    map.addLayer({
+        "id": "mcities",
+        "type": "circle",
+        "source": "mcities",
+        "layout": {
+            "visibility": 'none'
+        },
+        "paint": {
+            'circle-color': 'white',
+            'circle-opacity': 1.0,
+            'circle-stroke-color': 'yellow',
+            'circle-stroke-width': 2,
+            'circle-stroke-opacity': 1.0,
+        }
+    });
+    map.addSource('rrs2', { type: 'geojson', data: emptyGJ });
+    map.addLayer({
+        "id": "rrs2",
+        "type": "line",
+        "source": "rrs2",
+        "layout": {
+            "visibility": 'none'
+        },
+        "paint": {
+            'line-color': '#0099cc',
+            'line-opacity': .8,
+            "line-width": 4,
+        }
+    });
 
 
     // //Layer Info function
@@ -558,7 +588,7 @@ map.on('load', function () {
     //                                                                              \__|                                                                                                                                                                                                \______/                                                               
     map.on('mousemove', function (e) {
         var features = map.queryRenderedFeatures(e.point, {
-            layers: ['ocean', 'river', 'country', 'populated', 'monster', 'octo', 'EZUFOS']
+            layers: ['ocean', 'river', 'country', 'populated', 'monster', 'octo', 'mcities','cell','rrs2','earthqu']
         });
         map.getCanvas().style.cursor = (features.length) ? 'default' : '';
     });
@@ -722,10 +752,7 @@ map.on('load', function () {
 //                                                                            \______/                 \__|                                                 
 // Directory Options
 // Directory Options - open or closed by defualt (true/false)
-var directoryOptions =
-    [
-
-        {
+var directoryOptions = [{
             'name': 'Monsters',
             'open': true
         },
@@ -834,23 +861,7 @@ var layers =
         //                                                                                                                                                                                                                                           
         // Cultural LAYER TREE CONFIG
 
-        //  map.addSource('populated', { type: 'geojson', data: emptyGJ });
-        //  map.addLayer({
-        //      "id": "populated",
-        //      "type": "circle",
-        //      "source": "populated",
-        //      "layout": {
-        //          "visibility": 'none'
-        //      },
-        //      "paint": {
-        //          'circle-color': 'white',
-        //          'circle-opacity': 1.0,
-        //          'circle-stroke-color': '#ff8c1a',
-        //          'circle-stroke-width': 2,
-        //          'circle-stroke-opacity': 1.0,
-        //      }
-        //  });
-
+        
 
         {
             'name': 'Populated Places',
@@ -859,13 +870,6 @@ var layers =
             'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places_simple.geojson',
             'directory': 'Cultural',
         },
-        // {
-        //     'name': 'UFO',
-        //     'id': 'ufo',
-        //     'source': "ufo",
-        //     'path': 'Assignments/A04/Data/ufo_data/ufos.geojson',
-        //     'directory': 'Ben',
-        // },
         {
             'name': 'Countries',
             'id': 'country',
@@ -900,18 +904,39 @@ var layers =
             'id': 'ocean',
             'source': 'ocean',
             'path': 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_geography_marine_polys.geojson',
-            'directory': 'Ben',
+            'directory': 'Physical',
         },
         //Ben LAYER TREE CONFIG
 
         {
-            'name': 'Ez UFOS ',
-            'id': 'EZUFOS',
-            'source': 'EZUFOS',
-            'path': 'http://localhost:8080/dataset?set=EZUFOS',
+            'name': 'cellular ',
+            'id': 'cell',
+            'source': 'cell',
+            'path': 'http://localhost:8080/layerdataset?set=CELL',
+            'directory': 'Ben',
+        },
+        {
+            'name': 'major cities ',
+            'id': 'mcities',
+            'source': 'mcities',
+            'path': 'http://localhost:8080/layerdataset?set=MCITIES',
+            'directory': 'Ben',
+        },
+        {
+            'name': 'Earthqu ',
+            'id': 'earthqu',
+            'source': 'earthqu',
+            'path': 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-6-01&endtime=2020-6-31',
             'directory': 'Ben',
         },
 
+        {
+            'name': 'RailRoads ',
+            'id': 'rrs2',
+            'source': 'rrs2',
+            'path': 'http://localhost:8080/layerdataset?set=RRS2',
+            'directory': 'Ben',
+        },
 
 
 

@@ -7,7 +7,20 @@
       "catagory": "Cultural",
       "type": "point"
     },
-
+    {
+      "source": "layerdataset?set=CELL",
+      "display_name": "cellular",
+      "name": "cell",
+      "catagory": "Ben",
+      "type": "point"
+    },
+    {
+      "source": "layerdataset?set=MCITIES",
+      "display_name": "major cities",
+      "name": "mcities",
+      "catagory": "Ben",
+      "type": "point"
+    },
     {
       "source": "ne_110m_admin_0_map_units",
       "display_name": "Country",
@@ -15,7 +28,6 @@
       "catagory": "Cultural",
       "type": "polygon"
     },
-
     {
       "source": "ne_110m_rivers_lake_centerlines",
       "display_name": "River",
@@ -24,13 +36,19 @@
       "type": "line"
     },
     {
-      "source": "dataset?set=EZUFOS",
-      "display_name": "EZ UFOs ",
-      "name": "EZUFOS",
+      "source": "layerdataset?set=RRS2",
+      "display_name": "Rail Roads ",
+      "name": "rrs2",
       "catagory": "Ben",
+      "type": "line"
+    },
+    {
+      "source": "query?format=geojson&starttime=2020-6-01&endtime=2020-6-31",
+      "display_name": "Earthq ",
+      "name": "earthqu",
+      "catagory": "Sets",
       "type": "point"
     },
-
     {
       "source": "ne_110m_geography_marine_polys",
       "display_name": "Ocean",

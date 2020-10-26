@@ -30,9 +30,9 @@ $(document).ready(function () {
 
         var props = new Array();
 
-        var sourcePath = "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/";
+        var sourcePath = "http://localhost:8080";
 
-        var filepath = sourcePath + geoJsonFile + ".geojson";
+        var filepath = sourcePath + geoJsonFile;// + ".geojson";
 
         //Grab geoJson properties and store in array.
         $.getJSON(filepath, function (data) {
