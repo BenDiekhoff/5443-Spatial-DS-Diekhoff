@@ -43,7 +43,7 @@ This assignment uses the Mapbox API and the [Portmap repository](https://github.
 - This is implemented with an Rtree
 
 ## Text
-- Paste any valid Feature Collection in the text box to make the points appear on the map
+- Paste any valid Feature Collection (Points) in the text box to make the points appear on the map
 
 ## Nearest Neighbor
 - Enter lng lat coordinates and the number of nearest neighbors to find and the nearest n UFO sightings will be displayed
