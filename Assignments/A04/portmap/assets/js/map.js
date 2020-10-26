@@ -417,114 +417,114 @@ map.on('load', function () {
 
     
 
-    //Layer Info function
-    //Layer Info function
-    //Layer Info function
-    //Layer Info function
-    map.on(touchEvent, function (e) {
+    // //Layer Info function
+    // //Layer Info function
+    // //Layer Info function
+    // //Layer Info function
+    // map.on(touchEvent, function (e) {
 
-        document.getElementById("layer-attribute").innerHTML = "";
+    //     document.getElementById("layer-attribute").innerHTML = "";
 
-    });
+    // });
 
-    map.on(touchEvent, function (e) {
+    // map.on(touchEvent, function (e) {
 
-        var popup = new mapboxgl.Popup();
-        var feature;
-        var append = document.getElementById('layer-attribute');
+    //     var popup = new mapboxgl.Popup();
+    //     var feature;
+    //     var append = document.getElementById('layer-attribute');
 
-        //Cultural - Layer Info
-        //Cultural - Layer Info
+    //     //Cultural - Layer Info
+    //     //Cultural - Layer Info
 
-        if (map.queryRenderedFeatures(e.point, { layers: ['populated'] }).length) {
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['populated'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['populated'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['populated'] })[0];
 
-            append.innerHTML +=
-                  '<h5>Populated Places</h5>' +
-                  '<hr>' +
-                  '<b>City: </b>' + feature.properties.name +
-                  '<hr>' +
-                  '<b>Country: </b>' + feature.properties.sov0name +
-                  '<hr>'
-        }
+    //         append.innerHTML +=
+    //               '<h5>Populated Places</h5>' +
+    //               '<hr>' +
+    //               '<b>City: </b>' + feature.properties.name +
+    //               '<hr>' +
+    //               '<b>Country: </b>' + feature.properties.sov0name +
+    //               '<hr>'
+    //     }
 
-        if (map.queryRenderedFeatures(e.point, { layers: ['country'] }).length) {
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['country'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['country'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['country'] })[0];
 
-            append.innerHTML +=
-              '<h5>Country</h5>' +
-              '<hr>' +
-              '<b>Port Name </b>' + feature.properties.admin +
-              '<hr>' +
-              '<b>Code: </b>' + feature.properties.adm0_a3 +
-              '<hr>'
-        }
+    //         append.innerHTML +=
+    //           '<h5>Country</h5>' +
+    //           '<hr>' +
+    //           '<b>Port Name </b>' + feature.properties.admin +
+    //           '<hr>' +
+    //           '<b>Code: </b>' + feature.properties.adm0_a3 +
+    //           '<hr>'
+    //     }
 
-        //Monster - Layer Info
-        //Monster - Layer Info
-        if (map.queryRenderedFeatures(e.point, { layers: ['monster'] }).length) {
+    //     //Monster - Layer Info
+    //     //Monster - Layer Info
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['monster'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['monster'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['monster'] })[0];
 
-            append.innerHTML +=
-                  '<h5>Monster Info</h5>' +
-                  '<hr>' +
-                  '<b>Name: </b>' + 'Mr. Claw' +
-                  '<hr>' +
-                  '<b>Place of Birth: </b>' + 'Atlantic Ocean' +
-                  '<hr>' +
-                  '<b>Likes: </b>' + 'Birthday Parties' +
-                  '<hr>' +
-                  '<b>Dislikes: </b>' + 'Seafood Festivals' +
-                  '<hr>'
-        }
+    //         append.innerHTML +=
+    //               '<h5>Monster Info</h5>' +
+    //               '<hr>' +
+    //               '<b>Name: </b>' + 'Mr. Claw' +
+    //               '<hr>' +
+    //               '<b>Place of Birth: </b>' + 'Atlantic Ocean' +
+    //               '<hr>' +
+    //               '<b>Likes: </b>' + 'Birthday Parties' +
+    //               '<hr>' +
+    //               '<b>Dislikes: </b>' + 'Seafood Festivals' +
+    //               '<hr>'
+    //     }
 
-        //Monster - Layer Info
-        //Monster - Layer Info
-        if (map.queryRenderedFeatures(e.point, { layers: ['octo'] }).length) {
+    //     //Monster - Layer Info
+    //     //Monster - Layer Info
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['octo'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['octo'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['octo'] })[0];
 
-            append.innerHTML +=
-                  '<h5>Monster Info</h5>' +
-                  '<hr>' +
-                  '<b>Name: </b>' + 'Mr. Octo' +
-                  '<hr>' +
-                  '<b>Place of Birth: </b>' + 'Pacific Ocean' +
-                  '<hr>' +
-                  '<b>Likes: </b>' + 'Big Salads' +
-                  '<hr>' +
-                  '<b>Dislikes: </b>' + 'Jules Verne' +
-                  '<hr>'
-        }
+    //         append.innerHTML +=
+    //               '<h5>Monster Info</h5>' +
+    //               '<hr>' +
+    //               '<b>Name: </b>' + 'Mr. Octo' +
+    //               '<hr>' +
+    //               '<b>Place of Birth: </b>' + 'Pacific Ocean' +
+    //               '<hr>' +
+    //               '<b>Likes: </b>' + 'Big Salads' +
+    //               '<hr>' +
+    //               '<b>Dislikes: </b>' + 'Jules Verne' +
+    //               '<hr>'
+    //     }
 
 
-        //Physical - Layer Info
-        //Physical  - Layer Info
-        if (map.queryRenderedFeatures(e.point, { layers: ['ocean'] }).length) {
+    //     //Physical - Layer Info
+    //     //Physical  - Layer Info
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['ocean'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['ocean'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['ocean'] })[0];
 
-            append.innerHTML +=
-                  '<h5>Oceans</h5>' +
-                  '<hr>' +
-                  '<b>Name: </b>' + feature.properties.name +
-                  '<hr>'
-        }
+    //         append.innerHTML +=
+    //               '<h5>Oceans</h5>' +
+    //               '<hr>' +
+    //               '<b>Name: </b>' + feature.properties.name +
+    //               '<hr>'
+    //     }
 
-        if (map.queryRenderedFeatures(e.point, { layers: ['river'] }).length) {
+    //     if (map.queryRenderedFeatures(e.point, { layers: ['river'] }).length) {
 
-            feature = map.queryRenderedFeatures(e.point, { layers: ['river'] })[0];
+    //         feature = map.queryRenderedFeatures(e.point, { layers: ['river'] })[0];
 
-            append.innerHTML +=
-                  '<h5>Major Rivers</h5>' +
-                  '<hr>' +
-                  '<b>Name: </b>' + feature.properties.name +
-                  '<hr>'
-        }
-    });
+    //         append.innerHTML +=
+    //               '<h5>Major Rivers</h5>' +
+    //               '<hr>' +
+    //               '<b>Name: </b>' + feature.properties.name +
+    //               '<hr>'
+    //     }
+    // });
 
     //                                                                                                  $$\            $$\                                                         $$\                                                                                    $$$$$$\  $$\                                         $$\     $$\                     
     //                                                                                                  \__|           $$ |                                                        $$ |                                                                                  $$  __$$\ \__|                                        $$ |    \__|                    

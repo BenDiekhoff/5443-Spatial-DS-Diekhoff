@@ -845,93 +845,93 @@ Line Modal
                         
 
 
-                        // var draw = new MapboxDraw({
-                        //     // this is used to allow for custom properties for styling draw features
-                        //     // it appends the word "user_" to the property
-                        //     userProperties: true,
-                        //     displayControlsDefault: false,
-                        //     controls: {
-                        //         polygon: true,
-                        //         point: true,
-                        //         line_string: true,
-                        //         trash: true,
-                        //     }
+                        var draw = new MapboxDraw({
+                            // this is used to allow for custom properties for styling draw features
+                            // it appends the word "user_" to the property
+                            userProperties: true,
+                            displayControlsDefault: false,
+                            controls: {
+                                polygon: true,
+                                point: true,
+                                line_string: true,
+                                trash: true,
+                            }
 
-                        // });
+                        });
 
-                        // var drawTool = document.getElementById('drawAppend');
-                        // drawTool.appendChild(draw.onAdd(map)).setAttribute("style", "display: inline-flex;", "border: 0;");
+                        var drawTool = document.getElementById('drawAppend');
+                        drawTool.appendChild(draw.onAdd(map)).setAttribute("style", "display: inline-flex;", "border: 0;");
 
 
 
-                        // var rectArray = []
-                        // document.getElementById('bboxButton').onclick = function () {
-                        //     draw.changeMode('draw_point');
-                        //     map.on(touchEvent, function (e) {
-                        //         draw.changeMode('draw_point');
-                        //         point = e.lngLat
-                        //         rectArray.push(point);
+                        var rectArray = []
+                        document.getElementById('bboxButton').onclick = function () {
+                            draw.changeMode('draw_point');
+                            map.on(touchEvent, function (e) {
+                                draw.changeMode('draw_point');
+                                point = e.lngLat
+                                rectArray.push(point);
 
-                        //         if (rectArray.length == 2) {
+                                if (rectArray.length == 2) {
 
-                        //             xmin = rectArray[0]["lng"];
-                        //             ymax = rectArray[0]["lat"];
-                        //             xmax = rectArray[1]["lng"];
-                        //             ymin = rectArray[1]["lat"];
+                                    xmin = rectArray[0]["lng"];
+                                    ymax = rectArray[0]["lat"];
+                                    xmax = rectArray[1]["lng"];
+                                    ymin = rectArray[1]["lat"];
                                     
 
-                        //             let lat = (ymin + ymax) / 2.0;
-                        //             let lng = (xmin + xmax) / 2.0;
+                                    let lat = (ymin + ymax) / 2.0;
+                                    let lng = (xmin + xmax) / 2.0;
 
-                        //             var center = [lng, lat];
-                        //             console.log(center);
+                                    var center = [lng, lat];
+                                    console.log(center);
 
-                        //             let coords = [
-                        //                 [xmin, ymax],
-                        //                 [xmax, ymax],
-                        //                 [xmax, ymin],
-                        //                 [xmin, ymin],
-                        //                 [xmin, ymax]
-                        //             ];
-                        //             let id = "bbox" + Math.random();
-                        //             let geojson = build_geojson(coords, "LineString");
-                        //             addLayer(id, geojson);
-                        //             addFlyTo(center, 5);
-                        //             // draw.changeMode("draw_trash");
+                                    let coords = [
+                                        [xmin, ymax],
+                                        [xmax, ymax],
+                                        [xmax, ymin],
+                                        [xmin, ymin],
+                                        [xmin, ymax]
+                                    ];
+                                    let id = "bbox" + Math.random();
+                                    let geojson = build_geojson(coords, "LineString");
+                                    addLayer(id, geojson);
+                                    addFlyTo(center, 5);
+                                    // draw.changeMode("draw_trash");
 
 
-                        //             layer = "bboxLayer" + Math.random();
+                                    layer = "bboxLayer" + Math.random();
 
-                        //             console.log('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
-                        //             $.get('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
-                        //                 .done(function (coords) {
-                        //                     console.log(coords);
+                                    console.log('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
+                                    $.get('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
+                                        .done(function (coords) {
+                                            console.log(coords);
                                             
-                        //                     // console.log(layer);
-                        //                     map.addSource(layer, {
-                        //                         type: 'geojson',
-                        //                         data: coords
-                        //                     });
+                                            // console.log(layer);
+                                            map.addSource(layer, {
+                                                type: 'geojson',
+                                                data: coords
+                                            });
 
-                        //                     map.addLayer({
-                        //                         id: layer,
-                        //                         type: 'circle',
-                        //                         source: layer,
-                        //                         paint: {
-                        //                             "circle-color": 'yellow',
-                        //                             "circle-radius": 8,
-                        //                         }
-                        //                     });
+                                            map.addLayer({
+                                                id: layer,
+                                                type: 'circle',
+                                                source: layer,
+                                                paint: {
+                                                    "circle-color": 'yellow',
+                                                    "circle-radius": 8,
+                                                }
+                                            });
 
                                       
-                        //                 });
-                        //                 rectArray = [];
+                                        });
+                                        rectArray = [];
                                                
-                        //         }
+                                }
 
-                        //     });
-                        //     $("#bboxButton").off('click'); 
-                        // }
+                            });
+                            $("#bboxButton").off('click'); 
+                        }
 
                     </script>
 
@@ -1070,35 +1070,35 @@ Line Modal
                         <input type="button" value="Submit Query" id="textSubmit" style="font-size: 10px;">
                         <input type="button" value="Reset" id="textReset" style="font-size: 10px;">
                         <script>
-                            // //Clear the text area
-                            // $("#textReset").click(function () {
-                            //     $("#textArea").val("");
-                            // });
+                            //Clear the text area
+                            $("#textReset").click(function () {
+                                $("#textArea").val("");
+                            });
 
-                            // // Show points
-                            // $("#textSubmit").click(function (event) {
-                            //     var textCoords = $("#textArea").val();
-                            //     textCoords = JSON.parse(textCoords);
-                            //     console.log(textCoords);
-                            //     var textPoints = 'textPoint' + Math.random()
+                            // Show points
+                            $("#textSubmit").click(function (event) {
+                                var textCoords = $("#textArea").val();
+                                textCoords = JSON.parse(textCoords);
+                                console.log(textCoords);
+                                var textPoints = 'textPoint' + Math.random()
 
-                            //     map.addSource(textPoints, {
-                            //         type: 'geojson',
-                            //         data: textCoords
-                            //     });
+                                map.addSource(textPoints, {
+                                    type: 'geojson',
+                                    data: textCoords
+                                });
 
-                            //     map.addLayer({
-                            //         id: textPoints,
-                            //         type: 'circle',
-                            //         source: textPoints,
-                            //         paint: {
-                            //             "circle-color": 'yellow',
-                            //             "circle-radius": 8,
-                            //         }
-                            //     });
+                                map.addLayer({
+                                    id: textPoints,
+                                    type: 'circle',
+                                    source: textPoints,
+                                    paint: {
+                                        "circle-color": 'yellow',
+                                        "circle-radius": 8,
+                                    }
+                                });
 
 
-                            // });
+                            });
                         </script>
                     </div>
                 </div>
@@ -1170,7 +1170,7 @@ Line Modal
                                 <i class="fa fa-fw fa-globe"></i> lng/lat
                     </pre>
                     <br>
-                    <!-- <script>
+                    <script>
                         map.on(touchEvent, function (e) {
                             document.getElementById('neighborCoords').innerHTML =
                                 JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
@@ -1231,7 +1231,7 @@ Line Modal
                                     });
 
                             });
-                        }); -->
+                        });
 
                     </script>
 
@@ -1426,129 +1426,129 @@ Line Modal
 
 
                     <script>
-                        // // Hides the dropdown list off the bat
-                        // $('#stateSelect').hide();
+                        // Hides the dropdown list off the bat
+                        $('#stateSelect').hide();
 
-                        // // Shows dropdown options as user types 
-                        // $("#pickState").keyup(function (event) {
+                        // Shows dropdown options as user types 
+                        $("#pickState").keyup(function (event) {
+                            populateStatesSelect();
+                        });
+
+                        // Clears search text and dropdown list
+                        $("#clearState").click(function (event) {
+                            $("#pickState").val("");
+                            $('#stateSelect').html("");
+                            $('#stateSelect').hide();
+                        });
+
+                        // Adds state to search bar when user clicks dropdown list
+                        $("#stateSelect").click(function (event) {
+                            let state = $("#stateSelect option:selected").text();
+                            $("#pickState").val(state);
+                            $('#stateSelect').hide();
+                            // console.log(state);
+
+                        });
+
+                        // adds bounding box to state on click
+                        $("#searchState").click(function (event) {
+                            let state = $("#pickState").val();
+                            $.get("http://localhost:8080/state_bbox?state=" + state, function (data) {
+                                console.log(data['results'][0]['name']);
+                                let results = data['results'][0];
+                                console.log(results);
+
+                                let xmax = results.xmax;
+                                let xmin = results.xmin;
+                                let ymax = results.ymax;
+                                let ymin = results.ymin;
+
+                                let lat = (ymin + ymax) / 2.0;
+                                let lng = (xmin + xmax) / 2.0;
+
+                                var center = [lng, lat];
+                                console.log(center);
+
+                                let coords = [
+                                    [xmin, ymax],
+                                    [xmax, ymax],
+                                    [xmax, ymin],
+                                    [xmin, ymin],
+                                    [xmin, ymax]
+                                ];
+                                let id = results.name + "line";
+                                let geojson = build_geojson(coords, "LineString");
+
+                                addLayer(id, geojson);
+                                addFlyTo(center, 5);
+
+                            });
+                        });
+
+                        // $("#searchState").click(function (event) {
                         //     populateStatesSelect();
                         // });
 
-                        // // Clears search text and dropdown list
-                        // $("#clearState").click(function (event) {
-                        //     $("#pickState").val("");
-                        //     $('#stateSelect').html("");
-                        //     $('#stateSelect').hide();
-                        // });
+                        function populateStatesSelect() {
+                            let filter = $("#pickState").val();
+                            let html = '';
 
-                        // // Adds state to search bar when user clicks dropdown list
-                        // $("#stateSelect").click(function (event) {
-                        //     let state = $("#stateSelect option:selected").text();
-                        //     $("#pickState").val(state);
-                        //     $('#stateSelect').hide();
-                        //     // console.log(state);
+                            $.get("http://localhost:8080/states?filter=" + filter, function (data) {
+                                // console.log(data);
+                                for (var i = 0; i < data['count']; i++) {
+                                    html += '<option>' + data['results'][i]['name'] + '</option>';
+                                };
 
-                        // });
+                                $('#stateSelect').attr("size", data['count']);
+                                $('#stateSelect').html(html);
+                                $('#stateSelect').show();
+                            });
+                        }
+                        /*
+                        coords [array] " of a linestring or polygon
+                        feature_type : [Polygon, Linestring]"
+                        */
+                        function build_geojson(coords, feature_type) {
+                            var geojson = {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': feature_type,
+                                    'coordinates': coords
+                                }
+                            };
+                            return geojson;
+                        }
 
-                        // // adds bounding box to state on click
-                        // $("#searchState").click(function (event) {
-                        //     let state = $("#pickState").val();
-                        //     $.get("http://localhost:8080/state_bbox?state=" + state, function (data) {
-                        //         console.log(data['results'][0]['name']);
-                        //         let results = data['results'][0];
-                        //         console.log(results);
+                        function addLayer(id, geojson) {
+                            console.log("ID" + id)
+                            console.log("GEOJSON" + geojson)
+                            map.addSource(id, {
+                                'type': 'geojson',
+                                'data': geojson
+                            });
+                            map.addLayer({
+                                'id': id,
+                                'type': 'line',
+                                'source': id,
+                                'layout': {
+                                    'line-join': 'round',
+                                    'line-cap': 'round'
+                                },
+                                'paint': {
+                                    'line-color': '#088',
+                                    'line-width': 8,
+                                    'line-opacity': 1
+                                }
+                            });
+                        }
 
-                        //         let xmax = results.xmax;
-                        //         let xmin = results.xmin;
-                        //         let ymax = results.ymax;
-                        //         let ymin = results.ymin;
-
-                        //         let lat = (ymin + ymax) / 2.0;
-                        //         let lng = (xmin + xmax) / 2.0;
-
-                        //         var center = [lng, lat];
-                        //         console.log(center);
-
-                        //         let coords = [
-                        //             [xmin, ymax],
-                        //             [xmax, ymax],
-                        //             [xmax, ymin],
-                        //             [xmin, ymin],
-                        //             [xmin, ymax]
-                        //         ];
-                        //         let id = results.name + "line";
-                        //         let geojson = build_geojson(coords, "LineString");
-
-                        //         addLayer(id, geojson);
-                        //         addFlyTo(center, 5);
-
-                        //     });
-                        // });
-
-                        // // $("#searchState").click(function (event) {
-                        // //     populateStatesSelect();
-                        // // });
-
-                        // function populateStatesSelect() {
-                        //     let filter = $("#pickState").val();
-                        //     let html = '';
-
-                        //     $.get("http://localhost:8080/states?filter=" + filter, function (data) {
-                        //         // console.log(data);
-                        //         for (var i = 0; i < data['count']; i++) {
-                        //             html += '<option>' + data['results'][i]['name'] + '</option>';
-                        //         };
-
-                        //         $('#stateSelect').attr("size", data['count']);
-                        //         $('#stateSelect').html(html);
-                        //         $('#stateSelect').show();
-                        //     });
-                        // }
-                        // /*
-                        // coords [array] " of a linestring or polygon
-                        // feature_type : [Polygon, Linestring]"
-                        // */
-                        // function build_geojson(coords, feature_type) {
-                        //     var geojson = {
-                        //         'type': 'Feature',
-                        //         'geometry': {
-                        //             'type': feature_type,
-                        //             'coordinates': coords
-                        //         }
-                        //     };
-                        //     return geojson;
-                        // }
-
-                        // function addLayer(id, geojson) {
-                        //     console.log("ID" + id)
-                        //     console.log("GEOJSON" + geojson)
-                        //     map.addSource(id, {
-                        //         'type': 'geojson',
-                        //         'data': geojson
-                        //     });
-                        //     map.addLayer({
-                        //         'id': id,
-                        //         'type': 'line',
-                        //         'source': id,
-                        //         'layout': {
-                        //             'line-join': 'round',
-                        //             'line-cap': 'round'
-                        //         },
-                        //         'paint': {
-                        //             'line-color': '#088',
-                        //             'line-width': 8,
-                        //             'line-opacity': 1
-                        //         }
-                        //     });
-                        // }
-
-                        // function addFlyTo(cent, zoom) {
-                        //     map.flyTo({
-                        //         center: cent,
-                        //         essential: true,
-                        //         zoom: zoom
-                        //     });
-                        // }
+                        function addFlyTo(cent, zoom) {
+                            map.flyTo({
+                                center: cent,
+                                essential: true,
+                                zoom: zoom
+                            });
+                        }
 
                     </script>
 
