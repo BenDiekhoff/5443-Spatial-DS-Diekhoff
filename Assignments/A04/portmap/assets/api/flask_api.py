@@ -216,14 +216,14 @@ def findNearestNeigbors():
     searchCoords=[lon,lat]     #[[98.581081, 29.38421],[98.581081, 29.38421]]
     # returns an array of distances and an array of indices for nearest neighbors
     distanceList, neighborList = tree.query(searchCoords,k=num,distance_upper_bound=180)
-    print(type(neighborList))
+    
 
-    # prints the results of the query to the console
-    if num > 1:
-        for i in range(0,num):
-            print(f"\nLng, Lat: {lon}, {lat}\nNearest neighbor: {coords[neighborList[i]]}\tDistance: {distanceList[i]}")
-    else:
-        print(f"\nLng, Lat: {lon}, {lat}\nNearest neighbor: {neighborList}\tDistance: {distanceList}")
+    # # prints the results of the query to the console
+    # if num > 1:
+    #     for i in range(0,num):
+    #         print(f"\nLng, Lat: {lon}, {lat}\nNearest neighbor: {coords[neighborList[i]]}\tDistance: {distanceList[i]}")
+    # else:
+    #     print(f"\nLng, Lat: {lon}, {lat}\nNearest neighbor: {neighborList}\tDistance: {distanceList}")
 
     neighbors = []
     if num == 1:
@@ -237,7 +237,7 @@ def findNearestNeigbors():
             neighbors.append(geojson.Feature(geometry=point))
     neighbors = geojson.FeatureCollection(neighbors)
 
-    print(neighbors)
+
     return neighbors
 
 
@@ -268,7 +268,7 @@ def mabr():
         intersections.append(rtreeID[i])
 
     intersections = geojson.FeatureCollection(intersections)
-    print(intersections)
+
 
     return intersections
 

@@ -243,12 +243,15 @@
                             <i class="fa fa-fw fa-list" id="list-load"></i>
                         </a>
                     </li>
-                    <li>
-                        <!-- Layer Attributes -->
-                        <!-- <a class="clickable" data-toggle="modal" data-target="#attributesModal"
+                    <!-- <li>
+                        Layer Attributes 
+                        <a class="clickable" data-toggle="modal" data-target="#attributesModal"
                             title="Layer's Attributes">
                             <i class="fa fa-fw fa-info"></i>
-                        </a> -->
+                        </a>
+                    </li> -->
+                    <li>
+                        <!-- Text Modal Button -->
                         <a class="clickable" data-toggle="modal" data-target="#textModal" title="Text Box Modal">
                             <i class="far fa-file-alt"></i>
                         </a>
@@ -262,12 +265,12 @@
                             <i class="fas fa-user-friends"></i>
                         </a>
 
-                    <li>
-                        <!-- Draw Button -->
+                    <!-- <li>
+                        Draw Button
                         <a class="clickable" data-toggle="modal" data-target="#drawModal" title="Draw & Measure">
                             <i class="fas fa-fw fa-pencil-alt"></i>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <!-- Coordinates/Address Button -->
                         <a class="clickable" data-toggle="modal" data-target="#geolocationModal"
@@ -296,13 +299,13 @@
                         </a>
                     </li>
 
-                    <li>
-                        <!-- Print Map Button -->
+                    <!-- <li>
+                        Print Map Button
                         <a class="stop-print-click" id="mapboxgl-ctrl-print" data-toggle="modal"
                             data-target="#map-print-modal" title="Print Map">
                             <i class="fa fa-fw fa-print"></i>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </nav>
@@ -798,7 +801,10 @@
         });
     </script>
 
-
+<!--
+Line Modal
+Line Modal
+-->
 
 
 
@@ -839,93 +845,93 @@
                         
 
 
-                        var draw = new MapboxDraw({
-                            // this is used to allow for custom properties for styling draw features
-                            // it appends the word "user_" to the property
-                            userProperties: true,
-                            displayControlsDefault: false,
-                            controls: {
-                                polygon: true,
-                                point: true,
-                                line_string: true,
-                                trash: true,
-                            }
+                        // var draw = new MapboxDraw({
+                        //     // this is used to allow for custom properties for styling draw features
+                        //     // it appends the word "user_" to the property
+                        //     userProperties: true,
+                        //     displayControlsDefault: false,
+                        //     controls: {
+                        //         polygon: true,
+                        //         point: true,
+                        //         line_string: true,
+                        //         trash: true,
+                        //     }
 
-                        });
+                        // });
 
-                        var drawTool = document.getElementById('drawAppend');
-                        drawTool.appendChild(draw.onAdd(map)).setAttribute("style", "display: inline-flex;", "border: 0;");
+                        // var drawTool = document.getElementById('drawAppend');
+                        // drawTool.appendChild(draw.onAdd(map)).setAttribute("style", "display: inline-flex;", "border: 0;");
 
 
 
-                        var rectArray = []
-                        document.getElementById('bboxButton').onclick = function () {
-                            draw.changeMode('draw_point');
-                            map.on(touchEvent, function (e) {
-                                draw.changeMode('draw_point');
-                                point = e.lngLat
-                                rectArray.push(point);
+                        // var rectArray = []
+                        // document.getElementById('bboxButton').onclick = function () {
+                        //     draw.changeMode('draw_point');
+                        //     map.on(touchEvent, function (e) {
+                        //         draw.changeMode('draw_point');
+                        //         point = e.lngLat
+                        //         rectArray.push(point);
 
-                                if (rectArray.length == 2) {
+                        //         if (rectArray.length == 2) {
 
-                                    xmin = rectArray[0]["lng"];
-                                    ymax = rectArray[0]["lat"];
-                                    xmax = rectArray[1]["lng"];
-                                    ymin = rectArray[1]["lat"];
+                        //             xmin = rectArray[0]["lng"];
+                        //             ymax = rectArray[0]["lat"];
+                        //             xmax = rectArray[1]["lng"];
+                        //             ymin = rectArray[1]["lat"];
                                     
 
-                                    let lat = (ymin + ymax) / 2.0;
-                                    let lng = (xmin + xmax) / 2.0;
+                        //             let lat = (ymin + ymax) / 2.0;
+                        //             let lng = (xmin + xmax) / 2.0;
 
-                                    var center = [lng, lat];
-                                    console.log(center);
+                        //             var center = [lng, lat];
+                        //             console.log(center);
 
-                                    let coords = [
-                                        [xmin, ymax],
-                                        [xmax, ymax],
-                                        [xmax, ymin],
-                                        [xmin, ymin],
-                                        [xmin, ymax]
-                                    ];
-                                    let id = "bbox" + Math.random();
-                                    let geojson = build_geojson(coords, "LineString");
-                                    addLayer(id, geojson);
-                                    addFlyTo(center, 5);
-                                    // draw.changeMode("draw_trash");
+                        //             let coords = [
+                        //                 [xmin, ymax],
+                        //                 [xmax, ymax],
+                        //                 [xmax, ymin],
+                        //                 [xmin, ymin],
+                        //                 [xmin, ymax]
+                        //             ];
+                        //             let id = "bbox" + Math.random();
+                        //             let geojson = build_geojson(coords, "LineString");
+                        //             addLayer(id, geojson);
+                        //             addFlyTo(center, 5);
+                        //             // draw.changeMode("draw_trash");
 
 
-                                    layer = "bboxLayer" + Math.random();
+                        //             layer = "bboxLayer" + Math.random();
 
-                                    console.log('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
-                                    $.get('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
-                                        .done(function (coords) {
-                                            console.log(coords);
+                        //             console.log('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
+                        //             $.get('http://localhost:8080/mabr?left=' + xmin + '&bottom=' + ymin + '&right=' + xmax + "&top=" + ymax)
+                        //                 .done(function (coords) {
+                        //                     console.log(coords);
                                             
-                                            // console.log(layer);
-                                            map.addSource(layer, {
-                                                type: 'geojson',
-                                                data: coords
-                                            });
+                        //                     // console.log(layer);
+                        //                     map.addSource(layer, {
+                        //                         type: 'geojson',
+                        //                         data: coords
+                        //                     });
 
-                                            map.addLayer({
-                                                id: layer,
-                                                type: 'circle',
-                                                source: layer,
-                                                paint: {
-                                                    "circle-color": 'yellow',
-                                                    "circle-radius": 8,
-                                                }
-                                            });
+                        //                     map.addLayer({
+                        //                         id: layer,
+                        //                         type: 'circle',
+                        //                         source: layer,
+                        //                         paint: {
+                        //                             "circle-color": 'yellow',
+                        //                             "circle-radius": 8,
+                        //                         }
+                        //                     });
 
                                       
-                                        });
-                                        rectArray = [];
+                        //                 });
+                        //                 rectArray = [];
                                                
-                                }
+                        //         }
 
-                            });
-                            $("#bboxButton").off('click'); 
-                        }
+                        //     });
+                        //     $("#bboxButton").off('click'); 
+                        // }
 
                     </script>
 
@@ -1064,35 +1070,35 @@
                         <input type="button" value="Submit Query" id="textSubmit" style="font-size: 10px;">
                         <input type="button" value="Reset" id="textReset" style="font-size: 10px;">
                         <script>
-                            //Clear the text area
-                            $("#textReset").click(function () {
-                                $("#textArea").val("");
-                            });
+                            // //Clear the text area
+                            // $("#textReset").click(function () {
+                            //     $("#textArea").val("");
+                            // });
 
-                            // Show points
-                            $("#textSubmit").click(function (event) {
-                                var textCoords = $("#textArea").val();
-                                textCoords = JSON.parse(textCoords);
-                                console.log(textCoords);
-                                var textPoints = 'textPoint' + Math.random()
+                            // // Show points
+                            // $("#textSubmit").click(function (event) {
+                            //     var textCoords = $("#textArea").val();
+                            //     textCoords = JSON.parse(textCoords);
+                            //     console.log(textCoords);
+                            //     var textPoints = 'textPoint' + Math.random()
 
-                                map.addSource(textPoints, {
-                                    type: 'geojson',
-                                    data: textCoords
-                                });
+                            //     map.addSource(textPoints, {
+                            //         type: 'geojson',
+                            //         data: textCoords
+                            //     });
 
-                                map.addLayer({
-                                    id: textPoints,
-                                    type: 'circle',
-                                    source: textPoints,
-                                    paint: {
-                                        "circle-color": 'yellow',
-                                        "circle-radius": 8,
-                                    }
-                                });
+                            //     map.addLayer({
+                            //         id: textPoints,
+                            //         type: 'circle',
+                            //         source: textPoints,
+                            //         paint: {
+                            //             "circle-color": 'yellow',
+                            //             "circle-radius": 8,
+                            //         }
+                            //     });
 
 
-                            });
+                            // });
                         </script>
                     </div>
                 </div>
@@ -1164,7 +1170,7 @@
                                 <i class="fa fa-fw fa-globe"></i> lng/lat
                     </pre>
                     <br>
-                    <script>
+                    <!-- <script>
                         map.on(touchEvent, function (e) {
                             document.getElementById('neighborCoords').innerHTML =
                                 JSON.stringify(e.lngLat, function (key, val) { return val.toFixed ? Number(val.toFixed(4)) : val; }).replace('{"lng":', '').replace('"lat":', ' ').replace('}', '')
@@ -1180,18 +1186,8 @@
                                     enterLng = '';
                                     enterLat = '';
                                     clearNN();
-                                    // map.removeLayer(enterLL);
-                                    // map.removeSource(enterLL);
-
-                                    // if (map.getLayer(enterLL)) {
-                                    //     map.removeLayer(enterLL);
-                                    //     map.removeSource(enterLL);
-                                    // }
-
-
-
                                 });
-                                //***************************This function will clear the nearest neighbors points*******************************
+                             
 
 
                                 //create
@@ -1232,22 +1228,10 @@
                                             });
                                         });
 
-                                    // function clearNN(){
-                                    //                            map.removeLayer(neighbors);
-                                    //                             map.removeSource(neighbors);
-
-                                    //                             if (map.getLayer(neighbors)) {
-                                    //                                 map.removeLayer(neighbors);
-                                    //                                 map.removeSource(neighbors);
-                                    //                             }
-
-
-                                    //                        };
-
-                                });
+                                    });
 
                             });
-                        });
+                        }); -->
 
                     </script>
 
@@ -1334,23 +1318,7 @@
                         <br> Step 1. Pick DataSets...
                     </p>
                     <br>
-                    <!-- <select>
-                            <option value="0" default = "selected">Choose...</option>
-                            <option value="1">UFO Sitings</option>
-                            <option value="2">States Bounding Box</option>
-                            <option value="3">States</option>
-                            <option value="4">Rail Roads </option>
-                            <option value="5">Plane Crashes</option>
-                            </select>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <hr> -->
+
 
                     <select class="dataset_picker" id="dataset" data-placeholder="Dataset Picker"></select>
 
@@ -1388,20 +1356,6 @@
                         console.log("hi");
                         console.log($("#dataset").html())
 
-                        // //Grabs a state name out of the input box and displays it
-                        // $("#dataset").click(function(event){
-                        //     let set = $("#dataset option:selected").text();
-                        //     $("#dataset_search").val(set);
-                        //     $("#dataset").val("hello")
-                        //     console.log($("#dataset").val("hllo"))
-                        //     // $("#dataset").hide();
-                        // });
-
-                        // //Get the data set names
-                        // $("#sumbit_dataset").click(function(event){
-                        //     let dataset = $("#dataset_search").val();
-                        //     console.log(dataset_search.val())
-                        // });
 
                         function populateDataset() {
                             let set = $("#dataset").val();
@@ -1423,12 +1377,7 @@
                         }
 
 
-                            // //Allows user to hit enter to search for json property
-                            // $("#dataset_search").keyup(function(event) {
-                            //     if (event.keyCode == 13) {
-                            //         $("#submit_datset").click();
-                            //     }
-                            // });
+
                     </script>
                 </div>
             </div>
@@ -1477,129 +1426,129 @@
 
 
                     <script>
-                        // Hides the dropdown list off the bat
-                        $('#stateSelect').hide();
+                        // // Hides the dropdown list off the bat
+                        // $('#stateSelect').hide();
 
-                        // Shows dropdown options as user types 
-                        $("#pickState").keyup(function (event) {
-                            populateStatesSelect();
-                        });
-
-                        // Clears search text and dropdown list
-                        $("#clearState").click(function (event) {
-                            $("#pickState").val("");
-                            $('#stateSelect').html("");
-                            $('#stateSelect').hide();
-                        });
-
-                        // Adds state to search bar when user clicks dropdown list
-                        $("#stateSelect").click(function (event) {
-                            let state = $("#stateSelect option:selected").text();
-                            $("#pickState").val(state);
-                            $('#stateSelect').hide();
-                            // console.log(state);
-
-                        });
-
-                        // adds bounding box to state on click
-                        $("#searchState").click(function (event) {
-                            let state = $("#pickState").val();
-                            $.get("http://localhost:8080/state_bbox?state=" + state, function (data) {
-                                console.log(data['results'][0]['name']);
-                                let results = data['results'][0];
-                                console.log(results);
-
-                                let xmax = results.xmax;
-                                let xmin = results.xmin;
-                                let ymax = results.ymax;
-                                let ymin = results.ymin;
-
-                                let lat = (ymin + ymax) / 2.0;
-                                let lng = (xmin + xmax) / 2.0;
-
-                                var center = [lng, lat];
-                                console.log(center);
-
-                                let coords = [
-                                    [xmin, ymax],
-                                    [xmax, ymax],
-                                    [xmax, ymin],
-                                    [xmin, ymin],
-                                    [xmin, ymax]
-                                ];
-                                let id = results.name + "line";
-                                let geojson = build_geojson(coords, "LineString");
-
-                                addLayer(id, geojson);
-                                addFlyTo(center, 5);
-
-                            });
-                        });
-
-                        // $("#searchState").click(function (event) {
+                        // // Shows dropdown options as user types 
+                        // $("#pickState").keyup(function (event) {
                         //     populateStatesSelect();
                         // });
 
-                        function populateStatesSelect() {
-                            let filter = $("#pickState").val();
-                            let html = '';
+                        // // Clears search text and dropdown list
+                        // $("#clearState").click(function (event) {
+                        //     $("#pickState").val("");
+                        //     $('#stateSelect').html("");
+                        //     $('#stateSelect').hide();
+                        // });
 
-                            $.get("http://localhost:8080/states?filter=" + filter, function (data) {
-                                // console.log(data);
-                                for (var i = 0; i < data['count']; i++) {
-                                    html += '<option>' + data['results'][i]['name'] + '</option>';
-                                };
+                        // // Adds state to search bar when user clicks dropdown list
+                        // $("#stateSelect").click(function (event) {
+                        //     let state = $("#stateSelect option:selected").text();
+                        //     $("#pickState").val(state);
+                        //     $('#stateSelect').hide();
+                        //     // console.log(state);
 
-                                $('#stateSelect').attr("size", data['count']);
-                                $('#stateSelect').html(html);
-                                $('#stateSelect').show();
-                            });
-                        }
-                        /*
-                        coords [array] " of a linestring or polygon
-                        feature_type : [Polygon, Linestring]"
-                        */
-                        function build_geojson(coords, feature_type) {
-                            var geojson = {
-                                'type': 'Feature',
-                                'geometry': {
-                                    'type': feature_type,
-                                    'coordinates': coords
-                                }
-                            };
-                            return geojson;
-                        }
+                        // });
 
-                        function addLayer(id, geojson) {
-                            console.log("ID" + id)
-                            console.log("GEOJSON" + geojson)
-                            map.addSource(id, {
-                                'type': 'geojson',
-                                'data': geojson
-                            });
-                            map.addLayer({
-                                'id': id,
-                                'type': 'line',
-                                'source': id,
-                                'layout': {
-                                    'line-join': 'round',
-                                    'line-cap': 'round'
-                                },
-                                'paint': {
-                                    'line-color': '#088',
-                                    'line-width': 8,
-                                    'line-opacity': 1
-                                }
-                            });
-                        }
+                        // // adds bounding box to state on click
+                        // $("#searchState").click(function (event) {
+                        //     let state = $("#pickState").val();
+                        //     $.get("http://localhost:8080/state_bbox?state=" + state, function (data) {
+                        //         console.log(data['results'][0]['name']);
+                        //         let results = data['results'][0];
+                        //         console.log(results);
 
-                        function addFlyTo(cent, zoom) {
-                            map.flyTo({
-                                center: cent,
-                                essential: true,
-                                zoom: zoom
-                            });
-                        }
+                        //         let xmax = results.xmax;
+                        //         let xmin = results.xmin;
+                        //         let ymax = results.ymax;
+                        //         let ymin = results.ymin;
+
+                        //         let lat = (ymin + ymax) / 2.0;
+                        //         let lng = (xmin + xmax) / 2.0;
+
+                        //         var center = [lng, lat];
+                        //         console.log(center);
+
+                        //         let coords = [
+                        //             [xmin, ymax],
+                        //             [xmax, ymax],
+                        //             [xmax, ymin],
+                        //             [xmin, ymin],
+                        //             [xmin, ymax]
+                        //         ];
+                        //         let id = results.name + "line";
+                        //         let geojson = build_geojson(coords, "LineString");
+
+                        //         addLayer(id, geojson);
+                        //         addFlyTo(center, 5);
+
+                        //     });
+                        // });
+
+                        // // $("#searchState").click(function (event) {
+                        // //     populateStatesSelect();
+                        // // });
+
+                        // function populateStatesSelect() {
+                        //     let filter = $("#pickState").val();
+                        //     let html = '';
+
+                        //     $.get("http://localhost:8080/states?filter=" + filter, function (data) {
+                        //         // console.log(data);
+                        //         for (var i = 0; i < data['count']; i++) {
+                        //             html += '<option>' + data['results'][i]['name'] + '</option>';
+                        //         };
+
+                        //         $('#stateSelect').attr("size", data['count']);
+                        //         $('#stateSelect').html(html);
+                        //         $('#stateSelect').show();
+                        //     });
+                        // }
+                        // /*
+                        // coords [array] " of a linestring or polygon
+                        // feature_type : [Polygon, Linestring]"
+                        // */
+                        // function build_geojson(coords, feature_type) {
+                        //     var geojson = {
+                        //         'type': 'Feature',
+                        //         'geometry': {
+                        //             'type': feature_type,
+                        //             'coordinates': coords
+                        //         }
+                        //     };
+                        //     return geojson;
+                        // }
+
+                        // function addLayer(id, geojson) {
+                        //     console.log("ID" + id)
+                        //     console.log("GEOJSON" + geojson)
+                        //     map.addSource(id, {
+                        //         'type': 'geojson',
+                        //         'data': geojson
+                        //     });
+                        //     map.addLayer({
+                        //         'id': id,
+                        //         'type': 'line',
+                        //         'source': id,
+                        //         'layout': {
+                        //             'line-join': 'round',
+                        //             'line-cap': 'round'
+                        //         },
+                        //         'paint': {
+                        //             'line-color': '#088',
+                        //             'line-width': 8,
+                        //             'line-opacity': 1
+                        //         }
+                        //     });
+                        // }
+
+                        // function addFlyTo(cent, zoom) {
+                        //     map.flyTo({
+                        //         center: cent,
+                        //         essential: true,
+                        //         zoom: zoom
+                        //     });
+                        // }
 
                     </script>
 
