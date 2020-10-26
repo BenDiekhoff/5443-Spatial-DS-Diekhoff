@@ -292,13 +292,13 @@
                             <i class="fas fa-fw fa-pencil-alt"></i>
                         </a>
                     </li> -->
-                    <li>
-                        <!-- Search Button -->
+                    <!-- <li>
+                        Search Button
                         <a class="clickable" data-toggle="modal" data-target="#searchModal"
                             title="Search Layer Attributes">
                             <i class="fa fa-fw fa-search"></i>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <!-- Bbox Button -->
                         <a class="clickable" data-toggle="modal" data-target="#bboxModal" title="Display Boudnding Box">
@@ -556,7 +556,7 @@
          Lets the user select a point on the map and place a marker                                                                                                                   
                                                                                                                                     
                                                                                                                                      -->
-      <div class="modal left fade" id="geolocationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal left fade" id="geolocationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -586,10 +586,7 @@
                                 <input type="button" value="clear" id="findLLButtonClear" style="font-size: 10px;">
                                 <br>
                                 <br>
-                                <input type="button" value="load" id="findLLButtonLoad" style="font-size: 10px;">
-                                <input type="button" value="save" id="findLLButtonSave" style="font-size: 10px;">
-                                <input type="button" value="delete save" id="findLLButtonClearSAve"
-                                    style="font-size: 10px;">
+
                             </div>
                         </div>
                         <br>
@@ -867,6 +864,7 @@
                     <br>
                     <input type="button" value="Draw Line" id="drawLineButton" style="font-size: 10px;">
                     <br>
+                    <input type="button" value="Erase Line" id="eraseLineButton" style="font-size: 10px;">
                     <br>
                     <br>
                     <br>
@@ -991,6 +989,18 @@
                         }
                     });
                 });
+                $('#eraseLineButton').click(function () {
+
+                    map.removeLayer(id);
+                    map.removeSource(id);
+
+                    if (map.getLayer(id)) {
+                        map.removeLayer(id);
+                        map.removeSource(id);
+                    }
+
+                });
+
 
                 //Adds cities to the dropdown list as the user types
                 function populateCitySelect(pickCity, citySelect) {
@@ -1133,6 +1143,8 @@
                     <input type="button" value="Bounding Box" id="bboxButton" style="font-size: 10px;">
                     <input type="button" value="Stop Bounding Box" id="stopBboxButton" style="font-size: 10px;">
                     <br>
+                    <input type="button" value="Clear Bounding Box" id="clearBboxButton" style="font-size: 10px;">
+                    <br>
                     <div id="drawAppend"></div>
                     <script>
                         $("#drawAppend").hide()
@@ -1191,9 +1203,21 @@
 
                                         let id = "bbox" + Math.random();
                                         let geojson = build_geojson(coords, "LineString");
+
                                         addLayer(id, geojson);
                                         addFlyTo(center, 5);
+                                        $('#clearBboxButton').click(function () {
 
+                                            map.removeLayer(layer);
+                                            map.removeSource(layer);
+
+                                            if (map.getLayer(layer)) {
+                                                map.removeLayer(layer);
+                                                map.removeSource(layer);
+                                            }
+                                            eraseLayer(id);
+
+                                        });
 
 
                                         layer = "bboxLayer" + Math.random();
@@ -1230,6 +1254,9 @@
                             }
 
                         }
+
+
+
                         // allows the user to stop drawing boudning boxes
                         document.getElementById('stopBboxButton').onclick = function () {
                             draw.changeMode("simple_select");
@@ -1449,9 +1476,15 @@
 
                                 //clear
                                 $('#findNNButtonClear').click(function () {
-                                    enterLng = '';
-                                    enterLat = '';
-                                    clearNN();
+                                  
+                                    map.removeLayer(neighbors);
+                                    map.removeSource(neighbors);
+
+                                    if (map.getLayer(neighbors)) {
+                                        map.removeLayer(neighbors);
+                                        map.removeSource(neighbors);
+                                    }
+                                    eraseLayer(neighbors)
                                 });
 
 
@@ -1766,7 +1799,16 @@
                                 }
                             });
                         }
+                        function eraseLayer(id) {
 
+                            map.removeLayer(id);
+                            map.removeSource(id);
+
+                            if (map.getLayer(id)) {
+                                map.removeLayer(id);
+                                map.removeSource(id);
+                            }
+                        }
                         function addFlyTo(cent, zoom) {
                             map.flyTo({
                                 center: cent,
