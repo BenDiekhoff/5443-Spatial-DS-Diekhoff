@@ -1,29 +1,59 @@
 import json
-count = 0
+from haversine import haversine, Unit
+
 with open("Assignments/A05/Data/grouped_roads.geojson", 'r') as f:
     data= json.load(f)
 
-
 jsonList =[]
+lonList = []
+latList = []
+id = 0
+
 for feature in data["features"]:
-    # print(feature)
-    for properties in feature["properties"]:
-        # input(type(properties))
-        if feature["properties"]["RTTYP"][0] == "I":
-            # input("press enter")
-            feature["properties"]["RTTYP"] = "I"
-            jsonList.append(feature)
-            # print("\n\n\n")
-            # print(feature)
+    length = 0
+    # Get all interstate features
+    if feature["properties"]["RTTYP"][0] == "I":
+        
+        # append lons and lats to parallel lists
+        for coords in feature["geometry"]["coordinates"][0]:
+            lonList.append(coords[0])
+            latList.append(coords[1])
+            # print (f"coord:{coords}")
 
-j = json.dumps(jsonList)
-# j = json.dumps(jsonList, indent = 4)
+        # make sure lists are the same size
+        if len(lonList) == len(latList):
 
+            # get the haversine distance between each set of coords. The sum of all distances is the distance of the entire line
+            for i in range(len(lonList)):
+                # haversine requires lat,lon tuples
+                coord1 = (latList[i], lonList[i])
+                coord2 = (latList[(i+1) % len(lonList)], lonList[(i+1) % len(lonList)])
+                dist = haversine(coord1, coord2, unit = "mi") # distance in miles
+                length += dist
+                # input(f"dist {i}: {dist}\n length {i}: {length}")
 
-with open("Assignments/A05/Data/pretty_grouped_Interstates.geojson", 'w+') as f:
+        # cleanup and assign each line a unique id
+        feature["properties"]["RTTYP"] = "I"
+        feature["properties"]["LINEARID"] = id
+        feature["properties"]["MTFCC"] = feature["properties"]["MTFCC"][0]
+        feature["properties"]["LENGTH"] = length
+        id += 1
+
+        jsonList.append(feature)
+
+featureCollection = {"type": "FeatureCollection", "features": jsonList}
+
+j = json.dumps(featureCollection)
+with open("Assignments/A05/Data/grouped_Interstates.geojson", 'w+') as f:
     f.write(j)
 
-# print(count)
+# j = json.dumps(jsonList, indent = 4)
+# with open("Assignments/A05/Data/pretty_grouped_Interstates.geojson", 'w+') as f:
+#     f.write(j)
+
+
+
+
 
 # {
 #     "type": "FeatureCollection",
