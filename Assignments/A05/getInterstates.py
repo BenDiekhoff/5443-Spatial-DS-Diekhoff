@@ -11,7 +11,6 @@ id = 0
 
 for feature in data["features"]:
     length = 0
-    # Get all interstate features
     if feature["properties"]["RTTYP"][0] == "I":
         
         # append lons and lats to parallel lists
@@ -40,16 +39,34 @@ for feature in data["features"]:
         id += 1
 
         jsonList.append(feature)
+    
+
+# not proud of this but I'm doing it anyway
+for interFeature in jsonList:
+    for interCoords in interFeature['geometry']['coordinates']:
+        for otherFeature in data["features"]:
+            for otherCoords in otherFeature["geometry"]["coordinates"][0]:
+                if otherCoords not in interCoords:
+                    otherFeature["properties"]["RTTYP"] = otherFeature["properties"]["RTTYP"][0]
+                    otherFeature["properties"]["LINEARID"] = id
+                    otherFeature["properties"]["MTFCC"] = otherFeature["properties"]["MTFCC"][0]
+                    id += 1
+                    jsonList.append(otherFeature)
+  
+        
+
+
+
 
 featureCollection = {"type": "FeatureCollection", "features": jsonList}
 
 j = json.dumps(featureCollection)
-with open("Assignments/A05/Data/grouped_Interstates.geojson", 'w+') as f:
+with open("Assignments/A05/Data/grouped_roads2.geojson", 'w+') as f:
     f.write(j)
 
-# j = json.dumps(jsonList, indent = 4)
-# with open("Assignments/A05/Data/pretty_grouped_Interstates.geojson", 'w+') as f:
-#     f.write(j)
+j = json.dumps(jsonList, indent = 4)
+with open("Assignments/A05/Data/pretty_grouped_roads2.geojson", 'w+') as f:
+    f.write(j)
 
 
 
