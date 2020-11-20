@@ -5,3 +5,7 @@
 /Assignments/A05/Railroads/*.geojson
 /Assignments/A05/Primary_Roads/*.geojson
 
+/Assignments/A05/Data/*.geojson
+/Assignments/A05/Data/*.json
+/Assignments/A05/Data/*/*.geojson
+/Assignments/A05/Data/*/*.json
