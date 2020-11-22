@@ -27,7 +27,7 @@ G = G.to_undirected()
 print("reading cities")
 with open(CITIES, "r") as f:
     cities = json.load(f)
-    
+
 print("making nodelist")
 nodelist=[]
 for feature in cities["features"]:
@@ -60,6 +60,7 @@ for node in nodelist:
             closestEdge = edge
             found = True
     if (found == True):
+        print(minDist)
         G.add_edge(node,closestEdge)
 
 print("writing shapefile")
