@@ -9,3 +9,7 @@
 /Assignments/A05/Data/*.json
 /Assignments/A05/Data/*/*.geojson
 /Assignments/A05/Data/*/*.json
+/Assignments/A05/Data/10m_data/citiesNroads.geojson
+/Assignments/A05/Data/10m_data/cities.geojson
+/Assignments/A05/Data/10m_data/roads.geojson
+/Assignments/A05/Data/10m_data/roads/*
