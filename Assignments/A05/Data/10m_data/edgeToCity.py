@@ -11,7 +11,6 @@ import subprocess
 import glob
 import shapefile
 
-
 CITIES = "Assignments/A05/Data/10m_data/cities.geojson"
 ROADS = "Assignments/A05/Data/10m_data/roads.geojson"
 INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/ne_10m_roads_north_america.shp"

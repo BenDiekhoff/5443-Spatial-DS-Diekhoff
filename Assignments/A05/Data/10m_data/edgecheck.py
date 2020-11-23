@@ -15,12 +15,10 @@ CITIES = "Assignments/A05/Data/10m_data/cities.geojson"
 ROADS = "Assignments/A05/Data/10m_data/roads.geojson"
 INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/roads/edges.shp"
 OUTPUT = 'Assignments/A05/Data/10m_data/roads'
+EDGES = "Assignments/A05/Data/10m_data/roads/edges.geosjon"
 
-print("loading map")
+print("reading graph")
 G = nx.read_shp(INPUT_SHAPEFILE, simplify=False)
-
-print("converting map")
-G = G.to_undirected()
 
 print("reading cities")
 with open(CITIES, "r") as f:
@@ -32,25 +30,28 @@ for feature in cities["features"]:
     coords = (feature["geometry"]["coordinates"][0] ,feature["geometry"]["coordinates"][1])
     nodelist.append(coords)
 
-print("reading roads")
-with open (ROADS, "r") as f:
-    roads = json.load(f)
+with open(EDGES,"r") as f:
+    edges = json.load(f)
 
+print("making nodelist")
+nodelist=[]
+for feature in cities["features"]:
+    coords = (feature["geometry"]["coordinates"][0] ,feature["geometry"]["coordinates"][1])
+    nodelist.append(coords)
 print("making edgelist")
 edgelist=[]
-for feature in roads["features"]:
+for feature in edges["features"]:
     edge = (feature['geometry']['coordinates'][0][0][0], feature['geometry']['coordinates'][0][0][1])
     edgelist.append(edge)
 
 i = 0
 max = len(nodelist)
 for node in nodelist:
+    i+=1
+    print(f"calculating paths for node {i}")
     for endnode in nodelist:
-        i+=1
-        print(f"calculating paths for node {i} of {max}")
-        try:
+        try:    
             path = nx.shortest_path(G,node, endnode)
+            input(path)
         except:
             pass
-        print(path)
-
