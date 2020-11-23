@@ -60,7 +60,7 @@ for node in nodelist:
             closestEdge = edge
             found = True
     if (found == True):
-        print(minDist)
+        # print(minDist)
         G.add_edge(node,closestEdge)
 
 print("writing shapefile")
