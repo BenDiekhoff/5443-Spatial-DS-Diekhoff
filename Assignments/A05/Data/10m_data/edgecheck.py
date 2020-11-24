@@ -13,7 +13,7 @@ import shapefile
 
 CITIES = "Assignments/A05/Data/10m_data/cities.geojson"
 ROADS = "Assignments/A05/Data/10m_data/roads.geojson"
-INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/roads/edges.shp"
+INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/results/ComplexEdges.shp"
 OUTPUT = 'Assignments/A05/Data/10m_data/roads'
 EDGES = "Assignments/A05/Data/10m_data/roads/edges.geosjon"
 
@@ -54,4 +54,5 @@ for node in nodelist:
             path = nx.shortest_path(G,node, endnode)
             input(path)
         except:
-            pass
+            print("didn't work")
+            
