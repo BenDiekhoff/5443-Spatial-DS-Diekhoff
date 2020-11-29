@@ -15,9 +15,13 @@ CITIES = "Assignments/A05/Data/10m_data/cities.geojson"
 ROADS = "Assignments/A05/Data/10m_data/roads.geojson"
 INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/roads/edges.shp"
 OUTPUT = 'Assignments/A05/Data/10m_data/roads'
+# OUTPUT = 'Assignments/A05/Data/10m_data/roads2'
 
 print("loading map")
-G = nx.read_shp(INPUT_SHAPEFILE, simplify=False)
+if OUTPUT =='Assignments/A05/Data/10m_data/roads':
+    G = nx.read_shp(INPUT_SHAPEFILE, simplify=True)
+else:
+    G = nx.read_shp(INPUT_SHAPEFILE, simplify=False)
 
 print("converting map")
 G = G.to_undirected()
@@ -39,18 +43,28 @@ with open (ROADS, "r") as f:
 print("making edgelist")
 edgelist=[]
 for feature in roads["features"]:
-    edge = (feature['geometry']['coordinates'][0][0][0], feature['geometry']['coordinates'][0][0][1])
-    edgelist.append(edge)
+    for coord in feature['geometry']['coordinates'][0]:
+        edgelist.append((coord[0], coord[1]))
 
 i = 0
 max = len(nodelist)
 for node in nodelist:
+    i+=1
+    print(f"calculating paths for node {i} of {max}")
     for endnode in nodelist:
-        i+=1
-        print(f"calculating paths for node {i} of {max}")
         try:
-            path = nx.shortest_path(G,node, endnode)
-        except:
-            pass
-        print(path)
+            input(nx.shortest_path(G, source=tuple(node), target=tuple(endnode)))
+            print(f"node: {node}, endnode: {endnode}")
 
+            # input(path)
+        except:
+
+            pass
+        # path = nx.shortest_path(G,source=tuple(x), target=tuple(y),weight=None,method="dijkstra")
+        
+
+        # try:
+        #     path = nx.shortest_path(G,node, endnode)
+        # except:
+        #     pass
+        # print(path)
