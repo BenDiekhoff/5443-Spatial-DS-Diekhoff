@@ -14,8 +14,8 @@ import shapefile
 CITIES = "Assignments/A05/Data/10m_data/cities.geojson"
 ROADS = "Assignments/A05/Data/10m_data/roads.geojson"
 INPUT_SHAPEFILE ="Assignments/A05/Data/10m_data/ne_10m_roads_north_america.shp"
-OUTPUT = 'Assignments/A05/Data/10m_data/roads'
-# OUTPUT = 'Assignments/A05/Data/10m_data/roads2'
+# OUTPUT = 'Assignments/A05/Data/10m_data/roads'
+OUTPUT = 'Assignments/A05/Data/10m_data/roads2'
 
 print("loading map")
 if OUTPUT =='Assignments/A05/Data/10m_data/roads':
@@ -34,7 +34,7 @@ print("making nodelist")
 nodelist=[]
 for feature in cities["features"]:
     # coords = (feature["geometry"]["coordinates"][0] ,feature["geometry"]["coordinates"][1])
-    coords = (feature["geometry"]["coordinates"][1] ,feature["geometry"]["coordinates"][0])
+    coords = (float("{:.7f}".format(feature["geometry"]["coordinates"][1])) ,float("{:.7f}".format(feature["geometry"]["coordinates"][0])))
     nodelist.append(coords)
 
 print("reading roads")
@@ -45,7 +45,7 @@ print("making edgelist")
 edgelist=[]
 for feature in roads["features"]:
     for coord in feature['geometry']['coordinates'][0]:
-        edgelist.append((coord[1], coord[0]))
+        edgelist.append((float("{:.7f}".format(coord[1])), float("{:.7f}".format(coord[0]))))
 
 print("beginning haversine")
 i = 0
@@ -74,7 +74,7 @@ for node in nodelist:
         city = (nodeX,nodeY)
         cityPath = (pathX,pathY)
 
-        G.add_edge(city,cityPath)
+        G.add_edge(city,cityPath, weight=minDist)
 
 print("writing shapefile")
 nx.write_shp(G, OUTPUT)

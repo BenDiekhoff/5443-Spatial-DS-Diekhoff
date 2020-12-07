@@ -20,7 +20,8 @@ OUTPUT = 'Assignments/A05/Data/10m_data/mst2'
 
 print("loading map")
 if OUTPUT =='Assignments/A05/Data/10m_data/mst':
-    G = nx.read_shp(INPUT_SHAPEFILE, simplify=True)
+    G = nx.read_shp(INPUT_SHAPEFILE, simplify=Tru7rsdsdds1gg3r5
+    e)
 else:
     G = nx.read_shp(INPUT_SHAPEFILE, simplify=False)
 
@@ -53,7 +54,7 @@ with open(CITIES, "r") as f:
 print("making nodelist")
 nodelist=[]
 for feature in cities["features"]:
-    coords = (feature["geometry"]["coordinates"][0] ,feature["geometry"]["coordinates"][1])
+    coords = (float("{:.7f}".format(feature["geometry"]["coordinates"][1])) ,float("{:.7f}".format(feature["geometry"]["coordinates"][0])))
     nodelist.append(coords)
 
 # input(len(nodelist))
@@ -80,6 +81,7 @@ for node in nodelist:
         try:
             # input(f"node: {node}, endnode: {endnode}")
             coords = nx.shortest_path(G, source=tuple(node), target=tuple(endnode))
+            print(coords)
             if len(coords) >1:
                 path.append(coords)
             # pathSet= set(tuple(i)for i in path)
